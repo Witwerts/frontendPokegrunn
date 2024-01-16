@@ -26,7 +26,7 @@ class AccountPageState extends NavigationPageState {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: MainApp.color1,
+      color: Color.fromARGB(255, 240, 240, 240),
       padding: EdgeInsets.zero,
       child: const Column(
         mainAxisAlignment: MainAxisAlignment.center,

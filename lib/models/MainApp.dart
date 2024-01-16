@@ -10,9 +10,9 @@ class MainApp extends StatelessWidget {
   //navigation
   //current user
   //settings (theme...)
-  static const Color color1 = Color.fromARGB(255, 202, 210, 197);
-  static const Color color2 = Color.fromARGB(255, 132, 169, 140);
-  static const Color color3 = Color.fromARGB(255, 82, 121, 95);
+  static const Color color1 = Color(0xFFF0F0F0);
+  static const Color color2 = Color(0xFF4B646B);
+  static const Color color3 = Color(0xFF104E5B);
   static const Color color4 = Color.fromARGB(255, 53, 79, 82);
 
   // This widget is the root of your application.

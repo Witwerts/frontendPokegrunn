@@ -20,7 +20,7 @@ class NavigationView extends StatelessWidget {
     for(var cIndex = 0; cIndex < navCategories.length; cIndex++){
       NavigationCategory cat = navCategories.elementAt(cIndex);
 
-      Widget button = NavItem(cat.svgIcon, navController.activeNavigator?.tabCategory == cat, onTap: () => navController.gotoPage(cIndex, cat.url));
+      Widget button = NavItem(cat.svgIcon, cat.title, navController.activeNavigator?.tabCategory == cat, onTap: () => navController.gotoPage(cIndex, cat.url));
 
       buttons.add(button);
     }
@@ -29,14 +29,22 @@ class NavigationView extends StatelessWidget {
       visible: navController.activeNavigator?.showNavigation ?? false,
       child: Container(
         color: Colors.transparent,
-        margin: EdgeInsets.all(8),
+        margin: EdgeInsets.all(10),
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           child: Container(
-            height: 70,
-            padding: EdgeInsets.zero,
-            color: MainApp.color3,
+            height: 80,
+            padding: EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black.withOpacity(0.4),
+                width: 1.0,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              color: Colors.white,
+            ),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: buttons,
             ),
