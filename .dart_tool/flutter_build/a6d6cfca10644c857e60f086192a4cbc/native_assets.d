@@ -1,0 +1,1 @@
+ C:\\Users\\alber\\Dropbox\\flutterr\\pokegrunn\\.dart_tool\\flutter_build\\a6d6cfca10644c857e60f086192a4cbc\\native_assets.yaml: 
