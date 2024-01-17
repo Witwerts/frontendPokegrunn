@@ -25,9 +25,7 @@ class NavigationController extends ChangeNotifier {
 
   NavigationController(){
     tabIndex = 0;
-
-    navigators[-1] = PageNavigator(tabCategory: NavigationCategory.none, showNavigation: false);
-
+    
     for(var tIndex = 0; tIndex < tabCategories.length; tIndex++){
       NavigationCategory cat = tabCategories[tIndex];
 
