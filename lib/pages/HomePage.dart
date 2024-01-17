@@ -26,7 +26,7 @@ class HomePageState extends NavigationPageState {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: MainApp.color1,
+      color: MainApp.color2,  
       padding: EdgeInsets.zero,
       child: const Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
 import 'package:pokegrunn/models/PageNavigator.dart';
 import 'package:pokegrunn/pages/EmptyPage.dart';
@@ -21,6 +22,8 @@ class MainApp extends StatelessWidget {
     NavigationController navController = Provider.of<NavigationController>(context);
     Map<int, PageNavigator> navigators = navController.navigators;
 
+    print(navController.tabIndex);
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -30,7 +33,10 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         body: Stack(
           children: [
-            ...navigators.values.toList(),
+            IndexedStack(
+              index: navController.tabIndex,
+              children: navigators.values.toList()
+            ),
             Align(
               alignment: Alignment.bottomCenter,
               child: NavigationView(),

@@ -50,12 +50,7 @@ class PageNavigatorState extends State<PageNavigator> {
           page = navController.getPage(route) ?? EmptyPage();
         }
 
-        builder = (BuildContext _) => (
-          Visibility(
-            visible: widget.active,
-            child: page,
-          )
-        );
+        builder = (BuildContext _) => page;
 
         return MaterialPageRoute(builder: builder, settings: settings);
       },

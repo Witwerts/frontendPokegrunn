@@ -8,8 +8,6 @@ import 'package:provider/provider.dart';
 import '../models/MainApp.dart';
 
 class NavigationView extends StatelessWidget {
-  bool visible = false;
-  
   @override
   Widget build(BuildContext context) {
     NavigationController navController = Provider.of<NavigationController>(context);
@@ -25,29 +23,26 @@ class NavigationView extends StatelessWidget {
       buttons.add(button);
     }
 
-    return Visibility(
-      visible: navController.activeNavigator?.showNavigation ?? false,
-      child: Container(
-        color: Colors.transparent,
-        margin: EdgeInsets.all(10),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          child: Container(
-            height: 80,
-            padding: EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.black.withOpacity(0.4),
-                width: 1.0,
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: Colors.white,
+    return Container(
+      color: Colors.transparent,
+      margin: EdgeInsets.all(10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        child: Container(
+          height: 80,
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black.withOpacity(0.4),
+              width: 1.0,
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: buttons,
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            color: Colors.white,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: buttons,
           ),
         ),
       ),
