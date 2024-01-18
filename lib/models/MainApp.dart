@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pokegrunn/controllers/AccountController.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
+import 'package:pokegrunn/models/NavigationPage.dart';
 import 'package:pokegrunn/models/PageNavigator.dart';
 import 'package:pokegrunn/pages/EmptyPage.dart';
 import 'package:pokegrunn/pages/HomePage.dart';
+import 'package:pokegrunn/services/account_service.dart';
 import 'package:pokegrunn/views/NavigationView.dart';
 import 'package:provider/provider.dart';
+import 'package:pokegrunn/util.dart';
 
 class MainApp extends StatelessWidget {
   //navigation
@@ -16,13 +21,13 @@ class MainApp extends StatelessWidget {
   static const Color color3 = Color(0xFF104E5B);
   static const Color color4 = Color.fromARGB(255, 53, 79, 82);
 
+  const MainApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     NavigationController navController = Provider.of<NavigationController>(context);
     Map<int, PageNavigator> navigators = navController.navigators;
-
-    print(navController.tabIndex);
 
     return MaterialApp(
       title: 'Flutter Demo',

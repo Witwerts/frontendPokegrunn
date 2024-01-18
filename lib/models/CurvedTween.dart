@@ -1,8 +1,7 @@
 import 'package:flutter/animation.dart';
 
 class CurvedTween extends Tween<double> {
-  CurvedTween({double? begin, double? end, required this.curve})
-      : super(begin: begin, end: end);
+  CurvedTween({super.begin, super.end, required this.curve});
 
   final Curve curve;
 

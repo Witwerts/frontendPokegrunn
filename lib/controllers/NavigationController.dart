@@ -5,6 +5,7 @@ import 'package:pokegrunn/models/PageNavigator.dart';
 import 'package:pokegrunn/pages/AccountPage.dart';
 import 'package:pokegrunn/pages/DashboardPage.dart';
 import 'package:pokegrunn/pages/HomePage.dart';
+import 'package:pokegrunn/pages/LoginPage.dart';
 import 'package:pokegrunn/pages/MapPage.dart';
 import 'package:pokegrunn/pages/SearchPage.dart';
 
@@ -15,12 +16,13 @@ class NavigationController extends ChangeNotifier {
   Map<int, PageNavigator> navigators = {};
 
   Map<String, NavigationPage> pages = {
-    '/': HomePage(),
-    '/dashboard': DashboardPage(),
-    '/search': SearchPage(),
-    '/map': MapPage(),
-    '/account': AccountPage(),
-    '/achievements': HomePage(),
+    '/': const HomePage(),
+    '/dashboard': const DashboardPage(),
+    '/search': const SearchPage(),
+    '/map': const MapPage(),
+    '/account': const AccountPage(),
+    '/achievements': const HomePage(),
+    '/login': const LoginPage(),
   };
 
   NavigationController(){
@@ -72,5 +74,9 @@ class NavigationController extends ChangeNotifier {
     }
     
     return null;
+  }
+
+  bool urlExists(String url) {
+    return pages.containsKey(url);
   }
 }

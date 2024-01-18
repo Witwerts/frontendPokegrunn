@@ -14,12 +14,12 @@ Widget NavItem(String svgPath, String title, bool isActive, {VoidCallback? onTap
     child: Ink(
       child: InkWell(
         onTap: onTap,
-        customBorder: RoundedRectangleBorder(
+        customBorder: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(14)), // Zorgt voor een strak vierkant zonder afronding
         ),
         child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Container(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
           width: 68,
           child: Column(
             children: [
@@ -31,7 +31,7 @@ Widget NavItem(String svgPath, String title, bool isActive, {VoidCallback? onTap
                   color: color,
                 ),
               ),
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               Text(
                 title.toUpperCase(),
                 textAlign: TextAlign.center,

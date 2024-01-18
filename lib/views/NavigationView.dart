@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
 import 'package:pokegrunn/models/NavigationCategory.dart';
-import 'package:pokegrunn/models/PageNavigator.dart';
 import 'package:pokegrunn/widgets/NavItem.dart';
 import 'package:provider/provider.dart';
 
-import '../models/MainApp.dart';
 
 class NavigationView extends StatelessWidget {
+  const NavigationView({super.key});
+
   @override
   Widget build(BuildContext context) {
     NavigationController navController = Provider.of<NavigationController>(context);
@@ -25,18 +25,18 @@ class NavigationView extends StatelessWidget {
 
     return Container(
       color: Colors.transparent,
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
         child: Container(
           height: 80,
-          padding: EdgeInsets.all(4),
+          padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             border: Border.all(
               color: Colors.black.withOpacity(0.4),
               width: 1.0,
             ),
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
             color: Colors.white,
           ),
           child: Row(
