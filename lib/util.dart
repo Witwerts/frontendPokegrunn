@@ -1,0 +1,1 @@
+const pokeGrunnApiEndpoint = "192.168.178.234:8000"; // Back end IP address

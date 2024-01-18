@@ -7,7 +7,7 @@ class Titlebar extends StatelessWidget {
   final Color bgColor;
   final double barHeight;
 
-  Titlebar({
+  const Titlebar({super.key, 
     required this.title,
     this.appBar,
     this.bgColor = MainApp.color3,
@@ -22,8 +22,8 @@ class Titlebar extends StatelessWidget {
     double minHeight = appBarHeight + statusBarHeight;
 
     return ClipRRect(
-      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
-      child: Container(
+      borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+      child: SizedBox(
         height: barHeight > minHeight ? barHeight : minHeight,
         child: Stack(
           children: [

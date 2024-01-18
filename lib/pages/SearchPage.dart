@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pokegrunn/models/MainApp.dart';
-import 'package:pokegrunn/models/NavigationCategory.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 import '../models/NavigationPage.dart';
 
 class SearchPage extends NavigationPage  {
-  SearchPage();
+  const SearchPage({super.key});
 
   @override
   String get routePath => "/search";
@@ -18,10 +17,6 @@ class SearchPage extends NavigationPage  {
 }
 
 class SearchPageState extends NavigationPageState {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

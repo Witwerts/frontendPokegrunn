@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pokegrunn/models/MainApp.dart';
-import 'package:pokegrunn/models/NavigationCategory.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 import '../models/NavigationPage.dart';
 
 class AccountPage extends NavigationPage  {
-  AccountPage();
+  const AccountPage({super.key});
 
   @override
   String get routePath => "/account";
@@ -18,15 +16,11 @@ class AccountPage extends NavigationPage  {
 }
 
 class AccountPageState extends NavigationPageState {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromARGB(255, 240, 240, 240),
+      color: const Color.fromARGB(255, 240, 240, 240),
       padding: EdgeInsets.zero,
       child: const Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pokegrunn/models/NavigationCategory.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 
 class NavigationPage extends StatefulWidget {
-  NavigationPage();
+  const NavigationPage({super.key});
 
   bool get showNavigation => true;
 
