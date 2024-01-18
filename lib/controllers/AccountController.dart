@@ -1,4 +1,7 @@
+import "dart:convert";
+
 import "package:flutter/widgets.dart";
+import "package:http/http.dart" as http;
 import "package:pokegrunn/services/account_service.dart";
 
 class AccountController with ChangeNotifier {
@@ -6,41 +9,44 @@ class AccountController with ChangeNotifier {
 
   String requestedUrl = "/";
 
+  String _username = "";
+  String get username => _username;
+
   final AccountService accountService;
   bool _isLoggedIn = false;
   bool get isLoggedIn => _isLoggedIn;
 
-  // REWRITE
-  bool login(String username) {
-    if (_isLoggedIn) {
-      return false;
+  void loadUser() async {
+    var readUsername = await accountService.readUser();
+
+    if (readUsername != null) {
+      _username = readUsername;
+      _isLoggedIn = true;
+    } else {
+      _isLoggedIn = false;
     }
-
-    // Check if user exists
-    try {
-      accountService.fetchUser(username).then((value) => null);
-    } catch (e) {
-      throw Exception(e);
-    }
-    accountService.saveUser(username);
-    //_isLoggedIn = true;
-
-    notifyListeners();
-
-    return true;
   }
 
   // REWRITE
-  bool logout() {
-    if (!_isLoggedIn) {
-      return false;
+  Future<bool> login(String username) async {
+    var uri = Uri.parse("http://${accountService.apiEnpoint}/api/user/$username");
+    var client = http.Client();
+    try {
+      var response = await client.get(uri);
+      Map<String, dynamic> decodedResponse = json.decode(response.body);
+
+      String decodedUsername = decodedResponse['username'];
+      _username = decodedUsername;
+      accountService.saveUser(decodedUsername);
+      _isLoggedIn = true;
+
+      return true;
+    } catch (e) {
+      client.close();
     }
 
-    accountService.clearUser();
     _isLoggedIn = false;
 
-    notifyListeners();
-
-    return true;
+    return false;
   }
 }

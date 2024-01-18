@@ -13,6 +13,7 @@ void main() async {
   NavigationController navController = NavigationController();
   FlutterSecureStorage storage = const FlutterSecureStorage();
   AccountController accountController = AccountController(AccountService(pokeGrunnApiEndpoint, storage));
+  accountController.loadUser();
 
   runApp(
     MultiProvider(

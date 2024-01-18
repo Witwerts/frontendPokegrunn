@@ -80,10 +80,10 @@ class loginPageState extends NavigationPageState<LoginPage> {
                       child: ElevatedButton(
                         onPressed: () async {
                           try {
-                            var result = accountController.login(_usernameInputController.text);
+                            var result = await accountController.login(_usernameInputController.text);
                             if (result) {
                               if (context.mounted) {
-                                //Navigator.pushReplacementNamed(context, accountController.requestedUrl);
+                                Navigator.pushReplacementNamed(context, accountController.requestedUrl);
                               }
                             } else {
                               if (context.mounted) {
