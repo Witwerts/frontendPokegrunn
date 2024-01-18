@@ -16,7 +16,8 @@ class AccountController with ChangeNotifier {
   bool _isLoggedIn = false;
   bool get isLoggedIn => _isLoggedIn;
 
-  void loadUser() async {
+  Future<void> loadUser() async {
+    try {
     var readUsername = await accountService.readUser();
 
     if (readUsername != null) {
@@ -24,6 +25,9 @@ class AccountController with ChangeNotifier {
       _isLoggedIn = true;
     } else {
       _isLoggedIn = false;
+    }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 

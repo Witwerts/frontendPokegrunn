@@ -13,15 +13,15 @@ void main() async {
   NavigationController navController = NavigationController();
   FlutterSecureStorage storage = const FlutterSecureStorage();
   AccountController accountController = AccountController(AccountService(pokeGrunnApiEndpoint, storage));
-  accountController.loadUser();
-
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => navController),
-        ChangeNotifierProvider(create: (context) => accountController),
-      ],
-      child: const MainApp(),
-    ),
-  );
+  accountController.loadUser().then((value) => {
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => navController),
+          ChangeNotifierProvider(create: (context) => accountController),
+        ],
+        child: const MainApp(),
+      ),
+    )
+  });
 }
