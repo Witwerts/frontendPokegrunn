@@ -15,15 +15,16 @@ class PageNavigator extends StatefulWidget {
 
   Map<String, NavigationPage> loadedPages = {};
 
-  PageNavigator({super.key, 
+  PageNavigator({
+    super.key,
     required this.tabCategory,
     this.active = false,
-  }){
+  }) {
     navKey = GlobalKey<NavigatorState>();
 
     print("navigatie key: $navKey");
   }
-  
+
   @override
   State<StatefulWidget> createState() => PageNavigatorState();
 }
@@ -31,8 +32,10 @@ class PageNavigator extends StatefulWidget {
 class PageNavigatorState extends State<PageNavigator> {
   @override
   Widget build(BuildContext context) {
-    NavigationController navController = Provider.of<NavigationController>(context);
-    AccountController accountController = Provider.of<AccountController>(context);
+    NavigationController navController =
+        Provider.of<NavigationController>(context);
+    AccountController accountController =
+        Provider.of<AccountController>(context);
 
     return Navigator(
       key: widget.navKey,
@@ -42,10 +45,9 @@ class PageNavigatorState extends State<PageNavigator> {
         String route = settings.name ?? '/notfound';
         NavigationPage page = const EmptyPage();
 
-        if(widget.loadedPages.containsKey(route)){
+        if (widget.loadedPages.containsKey(route)) {
           page = widget.loadedPages[route]!;
-        }
-        else {
+        } else {
           page = navController.getPage(route) ?? const EmptyPage();
         }
 

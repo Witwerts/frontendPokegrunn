@@ -11,7 +11,7 @@ import 'package:pokegrunn/controllers/BarCodeScannerController.dart';
 import '../models/NavigationPage.dart';
 
 class QRScanPage extends NavigationPage {
-  QRScanPage();
+  const QRScanPage({super.key});
 
   @override
   String get routePath => "/qrscan";

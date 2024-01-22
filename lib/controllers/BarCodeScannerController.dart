@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:pokegrunn/controllers/AchievementController.dart';
+import 'package:pokegrunn/controllers/AccountController.dart';
+import 'package:pokegrunn/controllers/NavigationController.dart';
 import 'package:pokegrunn/widgets/scanner_error_widget.dart';
+
 import 'package:provider/provider.dart';
+import 'package:pokegrunn/models/NavigationCategory.dart';
 
 class BarcodeScannerWithController extends StatefulWidget {
   const BarcodeScannerWithController({super.key});
@@ -19,13 +22,13 @@ class _BarcodeScannerWithControllerState
   BarcodeCapture? barcode;
 
   final MobileScannerController controller = MobileScannerController(
-      torchEnabled: true,
-      formats: [BarcodeFormat.qrCode],
-      facing: CameraFacing.back,
-      detectionSpeed: DetectionSpeed.normal
-      // detectionTimeoutMs: 1000,
-      // returnImage: false,
-      );
+    torchEnabled: false,
+    formats: [BarcodeFormat.qrCode],
+    facing: CameraFacing.back,
+    detectionSpeed: DetectionSpeed.normal,
+    detectionTimeoutMs: 1000,
+    // returnImage: false,
+  );
 
   bool isStarted = true;
 
@@ -49,13 +52,28 @@ class _BarcodeScannerWithControllerState
     }
   }
 
-  void barcodeDetected() {
-    AchievementController achievementController =
-        Provider.of<AchievementController>(context, listen: false);
+  void barcodeDetected() async {
+    AccountController achievementController =
+        Provider.of<AccountController>(context, listen: false);
+    NavigationController navigationController =
+        Provider.of<NavigationController>(context, listen: false);
 
-    achievementController.registerAchievementToUser(
-        "user", barcode?.barcodes.first.rawValue);
-    print(barcode?.barcodes.first.rawValue);
+    bool success = false;
+    String message = '';
+
+    (success, message) = await achievementController.registerAchievementToUser(
+        "user", (barcode?.barcodes.first.rawValue)!);
+
+    print(success);
+
+    if (success) {
+      print("achievement is geregistreerd!");
+
+      await Future.delayed(Duration(seconds: 3));
+      navigationController.switchTab(NavigationCategory.home.tabIndex);
+    } else {
+      print("Er is iets mis gegaan: $message");
+    }
   }
 
   @override

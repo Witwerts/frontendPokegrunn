@@ -1,18 +1,20 @@
 import "dart:convert";
 
 import "package:flutter/widgets.dart";
-import "package:http/http.dart" as http;
+import "package:http/http.dart";
 import "package:pokegrunn/controllers/DataManager.dart";
 import "package:pokegrunn/models/UserModel.dart";
 import "package:pokegrunn/services/account_service.dart";
+import "package:pokegrunn/services/achievement_service.dart";
 
 class AccountController with ChangeNotifier {
-  AccountController(this.accountService);
+  AccountController(this.accountService, this.achievementService);
 
   String? _username;
   String? get username => _username;
 
   final AccountService accountService;
+  final AchievementService achievementService;
 
   bool get isLoggedIn => username != null;
 
@@ -33,9 +35,9 @@ class AccountController with ChangeNotifier {
   Future<bool> login(String username) async {
     UserModel? userData = await accountService.fetchUser(username);
 
-    if(userData != null){
+    if (userData != null) {
       _username = userData.username;
-      
+
       accountService.saveUser(_username!);
 
       return true;
@@ -50,5 +52,17 @@ class AccountController with ChangeNotifier {
     _username = null;
 
     return true;
+  }
+
+  Future<(bool, String)> registerAchievementToUser(
+      String user, String achievement) async {
+    Response? response =
+        await achievementService.registerAchievementToUser(user, achievement);
+
+    if (response != null) {
+      print(response.statusCode == 201);
+      return (response.statusCode == 201, response.body);
+    }
+    return (false, " Response niet gevonden");
   }
 }

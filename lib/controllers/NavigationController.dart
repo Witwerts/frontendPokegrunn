@@ -24,57 +24,72 @@ class NavigationController extends ChangeNotifier {
     'account': const AccountPage(),
     'achievements': const HomePage(),
     'login': const LoginPage(),
-    '/qrscan': const QRScanPage(),
+    'qrscan': const QRScanPage(),
   };
 
-  NavigationController(){
-    tabIndex = 0;
-    
-    for(var tIndex = 0; tIndex < tabCategories.length; tIndex++){
+  NavigationController() {
+    tabIndex = -1;
+
+    for (var tIndex = 0; tIndex < tabCategories.length; tIndex++) {
       NavigationCategory cat = tabCategories[tIndex];
 
-      navigators[tIndex] = PageNavigator(tabCategory: cat, showNavigation: true, active: tIndex == tabIndex);
+      navigators[tIndex] =
+          PageNavigator(tabCategory: cat, active: tIndex == tabIndex);
     }
 
-    navigators[navigators.length] = PageNavigator(tabCategory: NavigationCategory.none);
+    navigators[navigators.length] =
+        PageNavigator(tabCategory: NavigationCategory.none);
   }
 
   Map<int, Map<String, NavigationPage>> loadedPages = {};
   PageNavigator? get activeNavigator => navigators[tabIndex];
 
-  bool gotoPage(int tabIndex, String route){
-    print("goto tab $tabIndex");
+  bool switchTab(int? tabIndex) {
+    tabIndex = tabIndex ?? this.tabIndex;
 
-    if (!navigators.containsKey(tabIndex)) {
+    print("switch from tab ${this.tabIndex} to ${tabIndex}");
+
+    if (tabIndex >= navigators.length) {
       return false;
     }
 
-    if(!navigators.containsKey(tabIndex)){
-      return false;
-    }
-
-    GlobalKey<NavigatorState>? navKey = navigators[tabIndex]!.navKey;
-
-    if(newNavigator.currentPage == null || (newNavigator.currentPage != null && newNavigator.currentPage?.routePath != route)){
-      newNavigator.navKey.currentState?.pushNamed(route);
-
-      print("switch!");
-
-      navigators[this.tabIndex]!.active = false;
-
-      this.tabIndex = tabIndex;
-
-      navigators[tabIndex]!.active = true;
+    this.tabIndex = tabIndex;
 
     notifyListeners();
 
     return true;
   }
 
-  NavigationPage? getPage(String route){
-    if(pages.containsKey(route)){
-      print("page found!");
+  bool gotoPage(String route, [int? tabIndex, bool replace = false]) {
+    tabIndex = tabIndex ?? this.tabIndex;
 
+    if (!navigators.containsKey(tabIndex)) {
+      return false;
+    }
+
+    if (!navigators.containsKey(tabIndex)) {
+      return false;
+    }
+
+    GlobalKey<NavigatorState>? navKey = navigators[tabIndex]!.navKey;
+
+    if (tabIndex != this.tabIndex) {
+      switchTab(tabIndex);
+    }
+
+    if (replace) {
+      navKey.currentState?.popAndPushNamed(route);
+    } else {
+      navKey.currentState?.pushNamed(route);
+    }
+
+    notifyListeners();
+
+    return true;
+  }
+
+  NavigationPage? getPage(String route) {
+    if (pages.containsKey(route)) {
       return pages[route];
     }
 
