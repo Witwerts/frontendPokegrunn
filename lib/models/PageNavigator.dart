@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:pokegrunn/controllers/AccountController.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
 import 'package:pokegrunn/models/NavigationCategory.dart';
 import 'package:pokegrunn/models/NavigationPage.dart';
 import 'package:pokegrunn/pages/EmptyPage.dart';
-import 'package:pokegrunn/pages/HomePage.dart';
 import 'package:provider/provider.dart';
 
 class PageNavigator extends StatefulWidget {
   final NavigationCategory tabCategory;
-  final bool showNavigation;
   late GlobalKey<NavigatorState> navKey;
 
   bool active = false;
@@ -16,14 +15,13 @@ class PageNavigator extends StatefulWidget {
 
   Map<String, NavigationPage> loadedPages = {};
 
-  PageNavigator({
+  PageNavigator({super.key, 
     required this.tabCategory,
-    this.showNavigation = false,
     this.active = false,
   }){
     navKey = GlobalKey<NavigatorState>();
 
-    print("navigatie key: ${navKey}");
+    print("navigatie key: $navKey");
   }
   
   @override
@@ -34,6 +32,7 @@ class PageNavigatorState extends State<PageNavigator> {
   @override
   Widget build(BuildContext context) {
     NavigationController navController = Provider.of<NavigationController>(context);
+    AccountController accountController = Provider.of<AccountController>(context);
 
     return Navigator(
       key: widget.navKey,
@@ -41,14 +40,16 @@ class PageNavigatorState extends State<PageNavigator> {
       onGenerateRoute: (RouteSettings settings) {
         WidgetBuilder builder;
         String route = settings.name ?? '/notfound';
-        NavigationPage page = EmptyPage();
+        NavigationPage page = const EmptyPage();
 
         if(widget.loadedPages.containsKey(route)){
           page = widget.loadedPages[route]!;
         }
         else {
-          page = navController.getPage(route) ?? EmptyPage();
+          page = navController.getPage(route) ?? const EmptyPage();
         }
+
+        widget.loadedPages[route] = page;
 
         builder = (BuildContext _) => page;
 

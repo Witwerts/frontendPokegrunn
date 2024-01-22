@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/NavigationPage.dart';
 
 class EmptyPage extends NavigationPage  {
-  EmptyPage();
+  const EmptyPage({super.key});
 
   @override
   Widget getWidget(BuildContext context) {

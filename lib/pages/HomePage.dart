@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pokegrunn/models/MainApp.dart';
-import 'package:pokegrunn/models/NavigationCategory.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 import '../models/NavigationPage.dart';
 
 class HomePage extends NavigationPage  {
-  HomePage();
+  const HomePage({super.key});
 
   @override
   String get routePath => "/";
@@ -18,10 +17,6 @@ class HomePage extends NavigationPage  {
 }
 
 class HomePageState extends NavigationPageState {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

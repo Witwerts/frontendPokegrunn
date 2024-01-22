@@ -11,7 +11,7 @@ class NavigationPageState<T extends NavigationPage> extends State<T> with Ticker
 
   @override
   void initState() {
-    print("key: ${widget.key}");
+    super.initState();
   }
 
   @override
