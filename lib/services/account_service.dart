@@ -1,22 +1,9 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:pokegrunn/controllers/DataManager.dart';
 import 'dart:convert' as convert;
 
-class UserModel {
-  const UserModel({
-    required this.id,
-    required this.username,
-    this.firstName,
-    this.lastName,
-    required this.email,
-  });
-
-  final int id;
-  final String username;
-  final String? firstName;
-  final String? lastName;
-  final String email;
-}
+import 'package:pokegrunn/models/UserModel.dart';
 
 class AccountService {
   const AccountService(this.apiEnpoint, this.storage);
@@ -28,8 +15,10 @@ class AccountService {
     await storage.write(key: "username", value: username);
   }
 
-  void clearUser() async {
+  Future<bool> clearUser() async {
     await storage.delete(key: "username");
+
+    return true;
   }
 
   Future<String?>? readUser() async {
@@ -38,27 +27,17 @@ class AccountService {
     return username;
   }
 
-  Future<UserModel> fetchUser(String username) async {
-    var uri = Uri.parse("http://$apiEnpoint/api/user/$username");
-    http.Response response;
-    try {
-      response = await http.get(uri);
-    } catch (e) {
-      throw Exception('Failed to connect to server $apiEnpoint');
+  Future<UserModel?> fetchUser(String username) async {
+    Response? response = await DataManager.getResponse("$apiEnpoint/user/$username");
+
+    if (response != null && response.statusCode == 200) {
+      Map<String, dynamic>? body = DataManager.convertData(response);
+
+      if(body != null){
+        return UserModel.fromJson(body);
+      }
     }
 
-    if (response.statusCode == 200) {
-      var body = convert.jsonDecode(response.body) as dynamic;
-
-      return UserModel(
-        id:body['id'],
-        username: body['username'],
-        firstName: body['first_name'],
-        lastName: body['last_name'],
-        email: body['email']
-        );
-    } else {
-      throw Exception('Failed to load user');
-    }
+    return null;
   }
 }

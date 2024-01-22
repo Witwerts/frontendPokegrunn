@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 
 class PageNavigator extends StatefulWidget {
   final NavigationCategory tabCategory;
-  final bool showNavigation;
   late GlobalKey<NavigatorState> navKey;
 
   bool active = false;
@@ -18,7 +17,6 @@ class PageNavigator extends StatefulWidget {
 
   PageNavigator({super.key, 
     required this.tabCategory,
-    this.showNavigation = false,
     this.active = false,
   }){
     navKey = GlobalKey<NavigatorState>();
@@ -44,15 +42,14 @@ class PageNavigatorState extends State<PageNavigator> {
         String route = settings.name ?? '/notfound';
         NavigationPage page = const EmptyPage();
 
-        if(navController.urlExists(route) && route != "/login" && page.loginNeeded && !accountController.isLoggedIn) {
-          accountController.requestedUrl = route;
-          page = navController.getPage("/login") ?? const EmptyPage();
-        } else if(widget.loadedPages.containsKey(route)){
+        if(widget.loadedPages.containsKey(route)){
           page = widget.loadedPages[route]!;
         }
         else {
           page = navController.getPage(route) ?? const EmptyPage();
         }
+
+        widget.loadedPages[route] = page;
 
         builder = (BuildContext _) => page;
 

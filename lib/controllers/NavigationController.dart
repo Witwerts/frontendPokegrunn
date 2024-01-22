@@ -10,66 +10,83 @@ import 'package:pokegrunn/pages/MapPage.dart';
 import 'package:pokegrunn/pages/SearchPage.dart';
 
 class NavigationController extends ChangeNotifier {
-  int tabIndex = 0;
+  int tabIndex = -1;
   List<NavigationCategory> tabCategories = NavigationCategory.all;
 
   Map<int, PageNavigator> navigators = {};
 
   Map<String, NavigationPage> pages = {
-    '/': const HomePage(),
-    '/dashboard': const DashboardPage(),
-    '/search': const SearchPage(),
-    '/map': const MapPage(),
-    '/account': const AccountPage(),
-    '/achievements': const HomePage(),
-    '/login': const LoginPage(),
+    'home': const HomePage(),
+    'dashboard': const DashboardPage(),
+    'search': const SearchPage(),
+    'map': const MapPage(),
+    'account': const AccountPage(),
+    'achievements': const HomePage(),
+    'login': const LoginPage(),
   };
 
   NavigationController(){
-    tabIndex = 0;
+    tabIndex = -1;
     
     for(var tIndex = 0; tIndex < tabCategories.length; tIndex++){
       NavigationCategory cat = tabCategories[tIndex];
 
-      navigators[tIndex] = PageNavigator(tabCategory: cat, showNavigation: true, active: tIndex == tabIndex);
+      navigators[tIndex] = PageNavigator(tabCategory: cat, active: tIndex == tabIndex);
     }
+
+    navigators[navigators.length] = PageNavigator(tabCategory: NavigationCategory.none);
   }
 
   Map<int, Map<String, NavigationPage>> loadedPages = {};
   PageNavigator? get activeNavigator => navigators[tabIndex];
 
-  bool gotoPage(int tabIndex, String route){
-    print("goto tab $tabIndex");
+  bool switchTab(int? tabIndex){
+    tabIndex = tabIndex ?? this.tabIndex;
+
+    print("switch from tab ${this.tabIndex} to ${tabIndex}");
+
+    if(tabIndex >= navigators.length){
+      return false;
+    }
+
+    this.tabIndex = tabIndex;
+
+    notifyListeners();
+
+    return true;
+  }
+
+  bool gotoPage(String route, [int? tabIndex, bool replace = false]){
+    tabIndex = tabIndex ?? this.tabIndex;
 
     if(!navigators.containsKey(tabIndex)){
       return false;
     }
 
-    PageNavigator newNavigator = navigators[tabIndex]!;
-
-    if(newNavigator.currentPage == null || (newNavigator.currentPage != null && newNavigator.currentPage?.routePath != route)){
-      newNavigator.navKey.currentState?.pushNamed(route);
-
-      print("switch!");
-
-      navigators[this.tabIndex]!.active = false;
-
-      this.tabIndex = tabIndex;
-
-      navigators[tabIndex]!.active = true;
-
-      notifyListeners();
-
-      return true;
+    if(!navigators.containsKey(tabIndex)){
+      return false;
     }
 
-    return false;
+    GlobalKey<NavigatorState>? navKey = navigators[tabIndex]!.navKey;
+
+    if(tabIndex != this.tabIndex){
+      switchTab(tabIndex);
+    }
+
+    if(replace){
+      navKey.currentState?.popAndPushNamed(route);
+    }
+    else {
+      navKey.currentState?.pushNamed(route);
+    }
+
+    notifyListeners();
+
+    return true;
   }
 
   NavigationPage? getPage(String route){
     if(pages.containsKey(route)){
-      print("page found!");
-
       return pages[route];
     }
     

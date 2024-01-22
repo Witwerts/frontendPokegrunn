@@ -29,6 +29,10 @@ class MainApp extends StatelessWidget {
     NavigationController navController = Provider.of<NavigationController>(context);
     Map<int, PageNavigator> navigators = navController.navigators;
 
+    int tabIndex = navController.tabIndex < 0 ? (navigators.length + navController.tabIndex) : navController.tabIndex;
+
+    print("current tabIndex: $tabIndex");
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -39,7 +43,7 @@ class MainApp extends StatelessWidget {
         body: Stack(
           children: [
             IndexedStack(
-              index: navController.tabIndex,
+              index: tabIndex,
               children: navigators.values.toList()
             ),
             Align(
