@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:pokegrunn/controllers/AchievementController.dart';
 import 'package:pokegrunn/widgets/scanner_error_widget.dart';
+import 'package:provider/provider.dart';
 
 class BarcodeScannerWithController extends StatefulWidget {
   const BarcodeScannerWithController({super.key});
@@ -45,24 +47,15 @@ class _BarcodeScannerWithControllerState
         ),
       );
     }
+  }
 
-    void _Stop() {
-      try {
-        if (isStarted) {
-          controller.stop();
-        }
-        setState(() {
-          isStarted = false;
-        });
-      } on Exception catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Something went wrong! $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
+  void barcodeDetected() {
+    AchievementController achievementController =
+        Provider.of<AchievementController>(context, listen: false);
+
+    achievementController.registerAchievementToUser(
+        "user", barcode?.barcodes.first.rawValue);
+    print(barcode?.barcodes.first.rawValue);
   }
 
   @override
@@ -82,7 +75,7 @@ class _BarcodeScannerWithControllerState
                 onDetect: (barcode) {
                   setState(() {
                     this.barcode = barcode;
-                    controller.stop();
+                    barcodeDetected();
                   });
                 },
               ),
