@@ -6,6 +6,7 @@ import 'package:pokegrunn/pages/AccountPage.dart';
 import 'package:pokegrunn/pages/DashboardPage.dart';
 import 'package:pokegrunn/pages/HomePage.dart';
 import 'package:pokegrunn/pages/MapPage.dart';
+import 'package:pokegrunn/pages/QRScanPage.dart';
 import 'package:pokegrunn/pages/SearchPage.dart';
 
 class NavigationController extends ChangeNotifier {
@@ -21,31 +22,35 @@ class NavigationController extends ChangeNotifier {
     '/map': MapPage(),
     '/account': AccountPage(),
     '/achievements': HomePage(),
+    '/qrscan': QRScanPage(),
   };
 
-  NavigationController(){
+  NavigationController() {
     tabIndex = 0;
-    
-    for(var tIndex = 0; tIndex < tabCategories.length; tIndex++){
+
+    for (var tIndex = 0; tIndex < tabCategories.length; tIndex++) {
       NavigationCategory cat = tabCategories[tIndex];
 
-      navigators[tIndex] = PageNavigator(tabCategory: cat, showNavigation: true, active: tIndex == tabIndex);
+      navigators[tIndex] = PageNavigator(
+          tabCategory: cat, showNavigation: true, active: tIndex == tabIndex);
     }
   }
 
   Map<int, Map<String, NavigationPage>> loadedPages = {};
   PageNavigator? get activeNavigator => navigators[tabIndex];
 
-  bool gotoPage(int tabIndex, String route){
+  bool gotoPage(int tabIndex, String route) {
     print("goto tab $tabIndex");
 
-    if(!navigators.containsKey(tabIndex)){
+    if (!navigators.containsKey(tabIndex)) {
       return false;
     }
 
     PageNavigator newNavigator = navigators[tabIndex]!;
 
-    if(newNavigator.currentPage == null || (newNavigator.currentPage != null && newNavigator.currentPage?.routePath != route)){
+    if (newNavigator.currentPage == null ||
+        (newNavigator.currentPage != null &&
+            newNavigator.currentPage?.routePath != route)) {
       newNavigator.navKey.currentState?.pushNamed(route);
 
       print("switch!");
@@ -64,13 +69,13 @@ class NavigationController extends ChangeNotifier {
     return false;
   }
 
-  NavigationPage? getPage(String route){
-    if(pages.containsKey(route)){
+  NavigationPage? getPage(String route) {
+    if (pages.containsKey(route)) {
       print("page found!");
 
       return pages[route];
     }
-    
+
     return null;
   }
 }
