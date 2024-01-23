@@ -2,6 +2,7 @@ import "dart:convert";
 
 import "package:flutter/widgets.dart";
 import "package:http/http.dart" as http;
+import "package:http/http.dart";
 import "package:pokegrunn/controllers/DataManager.dart";
 import "package:pokegrunn/models/AchievementModel.dart";
 import "package:pokegrunn/models/UserModel.dart";
@@ -27,5 +28,17 @@ class AchievementController with ChangeNotifier {
 
       notifyListeners();
     }
+  }
+
+  Future<(bool, String)> registerAchievementToUser(
+      String user, String achievement) async {
+    Response? response =
+        await achievementService.registerAchievementToUser(user, achievement);
+
+    if (response != null) {
+      print(response.statusCode == 201);
+      return (response.statusCode == 201, response.body);
+    }
+    return (false, " Response niet gevonden");
   }
 }

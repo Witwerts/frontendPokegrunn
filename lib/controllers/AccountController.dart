@@ -53,16 +53,4 @@ class AccountController with ChangeNotifier {
 
     return true;
   }
-
-  Future<(bool, String)> registerAchievementToUser(
-      String user, String achievement) async {
-    Response? response =
-        await achievementService.registerAchievementToUser(user, achievement);
-
-    if (response != null) {
-      print(response.statusCode == 201);
-      return (response.statusCode == 201, response.body);
-    }
-    return (false, " Response niet gevonden");
-  }
 }

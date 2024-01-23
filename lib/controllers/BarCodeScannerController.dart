@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pokegrunn/controllers/AccountController.dart';
+import 'package:pokegrunn/controllers/AchievementController.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
 import 'package:pokegrunn/widgets/scanner_error_widget.dart';
 
@@ -53,8 +54,8 @@ class _BarcodeScannerWithControllerState
   }
 
   void barcodeDetected(AccountController accountController) async {
-    AccountController achievementController =
-        Provider.of<AccountController>(context, listen: false);
+    AchievementController achievementController =
+        Provider.of<AchievementController>(context, listen: false);
     NavigationController navigationController =
         Provider.of<NavigationController>(context, listen: false);
 
