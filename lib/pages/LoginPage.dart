@@ -32,7 +32,6 @@ class loginPageState extends NavigationPageState<LoginPage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => Provider.of<AccountController>(context).loadUser());
     WidgetsBinding.instance.addPostFrameCallback((_) => checkLoggedIn());
     super.initState();
   }
