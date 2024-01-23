@@ -27,7 +27,7 @@ class DataManager {
   static Future<Map<String, dynamic>?> postData(String page, [Map<String, dynamic> body = const {}, bool useAuth = true, int timeout = 5000]) async {
     Response? response = await postResult(page, body, timeout);
 
-    return convertData(response);
+    return convertData(response) as Map<String, dynamic>?;
   }
 
   static Future<Response?> getResponse(String url, [int timeout = 5000]) async {
@@ -50,10 +50,10 @@ class DataManager {
   static Future<Map<String, dynamic>?> getData(String url, [int timeout = 5000]) async {
     Response? response = await getResponse(url, timeout);
 
-    return convertData(response);
+    return convertData(response) as Map<String, dynamic>?;
   }
 
-  static Map<String, dynamic>? convertData(Response? response){
+  static dynamic? convertData(Response? response){
     if(response != null && response.body.isNotEmpty){
       return json.decode(response.body);
     }

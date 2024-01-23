@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pokegrunn/controllers/AccountController.dart';
+import 'package:pokegrunn/controllers/AchievementController.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
 import 'package:pokegrunn/models/MainApp.dart';
 import 'package:pokegrunn/models/NavigationCategory.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
+import 'package:pokegrunn/views/BoxContainer.dart';
 import 'package:pokegrunn/widgets/Titlebar.dart';
 import 'package:provider/provider.dart';
 import '../models/NavigationPage.dart';
@@ -28,8 +30,6 @@ class loginPageState extends NavigationPageState<LoginPage> {
   final _usernameInputController = TextEditingController();
   final _passwordInputController = TextEditingController();
 
-  bool disableButton = false;
-
   @override
   void initState() {
     super.initState();
@@ -38,6 +38,7 @@ class loginPageState extends NavigationPageState<LoginPage> {
   }
 
   void checkLoggedIn() async {
+    AchievementController achievementController = Provider.of<AchievementController>(context, listen: false);
     AccountController accountController = Provider.of<AccountController>(context, listen: false);
     NavigationController navController = Provider.of<NavigationController>(context, listen: false);
 
@@ -49,11 +50,10 @@ class loginPageState extends NavigationPageState<LoginPage> {
       setState(() {
         _usernameInputController.text = accountController.username!;
         _passwordInputController.text = "password";
-
-        disableButton = true;
       });
 
       //wait & redirect
+      achievementController.loadAchievements();
       await Future.delayed(Duration(seconds: 3));
       navController.switchTab(NavigationCategory.home.tabIndex);
       //navController.gotoPage("/", NavigationCategory.home.tabIndex);
@@ -61,13 +61,17 @@ class loginPageState extends NavigationPageState<LoginPage> {
   }
 
   void login() async {
+    AchievementController achievementController = Provider.of<AchievementController>(context, listen: false);
     AccountController accountController = Provider.of<AccountController>(context, listen: false);
     NavigationController navController = Provider.of<NavigationController>(context, listen: false);
 
     try {
       var result = await accountController.login(_usernameInputController.text);
+
       if (result) {
         if (context.mounted) {
+          achievementController.loadAchievements();
+
           await Future.delayed(Duration(seconds: 3));
           navController.switchTab(NavigationCategory.home.tabIndex);
         }
@@ -102,19 +106,8 @@ class loginPageState extends NavigationPageState<LoginPage> {
           const Titlebar(title: "PokeGrunn", barHeight: 130),
           Column(
             children: [
-              Container(
-                alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(top: 85, left: 20, right: 20),
-                width: double.maxFinite,
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.4),
-                    width: 1,
-                  ),
-                ),
+              BoxContainer(
+                margin: const EdgeInsets.only(top: 85, left: 20, right: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,7 +163,7 @@ class loginPageState extends NavigationPageState<LoginPage> {
                           onPrimary: Colors.white,
                           padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0), // Pas de hoekradius aan
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
                         child: const Text(
@@ -184,11 +177,10 @@ class loginPageState extends NavigationPageState<LoginPage> {
                     ),
                     const Divider(),
                     const SizedBox(
-                      width: double.infinity, // Maximale breedte van de ouderwidget
+                      width: double.infinity,
                       child: Column(
-                        
-                        mainAxisAlignment: MainAxisAlignment.center, // Plaats beide teksten in het midden van de hoofdas (verticaal)
-                        crossAxisAlignment: CrossAxisAlignment.center, // Plaats beide teksten in het midden van de kruisas (horizontaal)
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
                             "Forgot password? Click here!",
@@ -209,7 +201,6 @@ class loginPageState extends NavigationPageState<LoginPage> {
                         ],
                       ),
                     )
-                    
                   ],
                 ),
               )
