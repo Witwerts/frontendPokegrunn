@@ -31,7 +31,7 @@ class AccountService {
     Response? response = await DataManager.getResponse("$apiEnpoint/user/$username");
 
     if (response != null && response.statusCode == 200) {
-      Map<String, dynamic>? body = DataManager.convertData(response);
+      Map<String, dynamic>? body = DataManager.convertData(response) as Map<String, dynamic>?;
 
       if(body != null){
         return UserModel.fromJson(body);
