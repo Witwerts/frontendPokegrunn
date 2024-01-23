@@ -53,7 +53,9 @@ class _BarcodeScannerWithControllerState
     }
   }
 
-  void barcodeDetected(AccountController accountController) async {
+  void barcodeDetected() async {
+    AccountController accountController=
+        Provider.of<AccountController>(context, listen: false);
     AchievementController achievementController =
         Provider.of<AchievementController>(context, listen: false);
     NavigationController navigationController =
@@ -68,8 +70,10 @@ class _BarcodeScannerWithControllerState
     if (success) {
       print("achievement is geregistreerd!");
 
-      await Future.delayed(Duration(seconds: 3));
-      navigationController.switchTab(NavigationCategory.home.tabIndex);
+      //await Future.delayed(Duration(seconds: 3));
+
+      navigationController.resetTab(navigationController.tabIndex);
+      //navigationController.switchTab(navigationController.tabIndex);
     } else {
       print("Er is iets mis gegaan: $message");
     }
@@ -77,8 +81,6 @@ class _BarcodeScannerWithControllerState
 
   @override
   Widget build(BuildContext context) {
-    AccountController accountController = Provider.of<AccountController>(context, listen: false);
-
     return Scaffold(
       backgroundColor: Colors.black,
       body: Builder(
@@ -94,7 +96,7 @@ class _BarcodeScannerWithControllerState
                 onDetect: (barcode) {
                   setState(() {
                     this.barcode = barcode;
-                    barcodeDetected(accountController);
+                    barcodeDetected();
                   });
                 },
               ),

@@ -25,6 +25,13 @@ class PageNavigator extends StatefulWidget {
     print("navigatie key: $navKey");
   }
 
+  void reset(){
+    loadedPages.clear();
+
+    navKey.currentState!.popUntil((route) => (route.settings.name != tabCategory.url));
+    navKey.currentState!.pushReplacementNamed(tabCategory.url);
+  }
+
   @override
   State<StatefulWidget> createState() => PageNavigatorState();
 }

@@ -60,6 +60,24 @@ class NavigationController extends ChangeNotifier {
     return true;
   }
 
+  bool resetTab(int tabIndex){
+    if (tabIndex >= navigators.length) {
+      return false;
+    }
+
+    PageNavigator? navigator = navigators[tabIndex];
+
+    if(navigator == null){
+      return false;
+    }
+
+    navigator.reset();
+
+    notifyListeners();
+
+    return true;
+  }
+
   bool gotoPage(String route, [int? tabIndex, bool replace = false]) {
     tabIndex = tabIndex ?? this.tabIndex;
 

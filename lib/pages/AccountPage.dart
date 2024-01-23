@@ -29,12 +29,7 @@ class AccountPageState extends NavigationPageState {
 
     if(result){
       for(PageNavigator navigator in navController.navigators.values){
-        navigator.navKey.currentState!.popUntil((route){
-          return route.settings.name == navigator.tabCategory.url;
-        });
-
-        navigator.navKey.currentState!.pushReplacementNamed(navigator.tabCategory.url);
-        navigator.loadedPages.clear();
+        navController.resetTab(navigator.tabCategory.tabIndex);
       }
 
       navController.switchTab(-1);
