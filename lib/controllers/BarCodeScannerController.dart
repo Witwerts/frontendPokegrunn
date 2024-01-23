@@ -52,7 +52,7 @@ class _BarcodeScannerWithControllerState
     }
   }
 
-  void barcodeDetected() async {
+  void barcodeDetected(AccountController accountController) async {
     AccountController achievementController =
         Provider.of<AccountController>(context, listen: false);
     NavigationController navigationController =
@@ -62,9 +62,7 @@ class _BarcodeScannerWithControllerState
     String message = '';
 
     (success, message) = await achievementController.registerAchievementToUser(
-        "user", (barcode?.barcodes.first.rawValue)!);
-
-    print(success);
+        accountController.username!, (barcode?.barcodes.first.rawValue)!);
 
     if (success) {
       print("achievement is geregistreerd!");
@@ -78,6 +76,8 @@ class _BarcodeScannerWithControllerState
 
   @override
   Widget build(BuildContext context) {
+    AccountController accountController = Provider.of<AccountController>(context, listen: false);
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Builder(
@@ -93,7 +93,7 @@ class _BarcodeScannerWithControllerState
                 onDetect: (barcode) {
                   setState(() {
                     this.barcode = barcode;
-                    barcodeDetected();
+                    barcodeDetected(accountController);
                   });
                 },
               ),
