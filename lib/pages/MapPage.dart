@@ -7,6 +7,7 @@ import 'package:pokegrunn/controllers/LocationController.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
 import 'package:pokegrunn/models/AchievementModel.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
+import 'package:pokegrunn/widgets/Mapitem.dart';
 import 'package:pokegrunn/widgets/Titlebar.dart';
 import 'package:provider/provider.dart';
 import '../models/NavigationPage.dart';
@@ -47,19 +48,13 @@ class MapPageState extends NavigationPageState {
           width: 60.0,
           height: 60.0,
           alignment: Alignment.topCenter,
-          child: const Icon(
-            Icons.location_on,
-            size: 60,
-            color:Colors.white,
-            shadows: [Shadow(offset: Offset(2.0, 2.0))],
-          )
+          child: MapItem(achievement: achievement),
         )
       );
     }
 
     setState(() {
       markerList = markers;
-      print(markerList);
     });
   }
 
@@ -73,9 +68,9 @@ class MapPageState extends NavigationPageState {
         FlutterMap(
           mapController: mapController,
           options: const MapOptions(
-            center: LatLng(53.241440630171795, 6.5332570758746265),
-            zoom: 14,
-            interactiveFlags: InteractiveFlag.all,
+            initialCenter: LatLng(53.241440630171795, 6.5332570758746265),
+            initialZoom: 14,
+            interactionOptions: InteractionOptions(),
           ),
           children: [
             TileLayer(
@@ -83,14 +78,16 @@ class MapPageState extends NavigationPageState {
               subdomains: const ['a', 'b', 'c'],
             ),
             CurrentLocationLayer(
-              followOnLocationUpdate: followMe ? FollowOnLocationUpdate.always : FollowOnLocationUpdate.never,
-              turnOnHeadingUpdate: TurnOnHeadingUpdate.never,
+              alignPositionOnUpdate: followMe ? AlignOnUpdate.always : AlignOnUpdate.never,
+              alignDirectionOnUpdate: AlignOnUpdate.never,
               style: const LocationMarkerStyle(
                 marker: DefaultLocationMarker(),
                 markerDirection: MarkerDirection.top,
               ),
             ),
-            MarkerLayer(markers: markerList)
+            MarkerLayer(
+              markers: markerList
+            )
           ],
         ),
         const Titlebar(title: "Achievements in de buurt"),
