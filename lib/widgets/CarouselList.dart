@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pokegrunn/models/CarouselItem.dart';
-import 'package:pokegrunn/models/CarouselListItem.dart';
+import 'package:pokegrunn/widgets/CarouselListItem.dart';
 import 'package:pokegrunn/views/BoxContainer.dart';
 
 class CarouselList extends StatefulWidget {
@@ -32,7 +32,7 @@ class CarouselListState extends State<CarouselList> {
               Align (
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
                   child: SvgPicture.asset(
                     'src/icons/map.svg',
                     height: 36,
@@ -45,11 +45,11 @@ class CarouselListState extends State<CarouselList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                     child: Text(
                       widget.title ?? '',
                       textAlign: TextAlign.start,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w600
                       ),
@@ -59,10 +59,13 @@ class CarouselListState extends State<CarouselList> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: widget.items.map((item) {
-                        return CarouselListItem(item);
+                        bool isLast = widget.items.indexOf(item) == (widget.items.length-1);
+
+                        print(widget.items.indexOf(item));
+                        print(isLast);
+
+                        return CarouselListItem(item, EdgeInsets.only(bottom: !isLast ? 4.0 : 0.0));
                       }).toList(),
                     )
                     // Column(

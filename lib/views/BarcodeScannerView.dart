@@ -9,16 +9,16 @@ import 'package:pokegrunn/widgets/scanner_error_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:pokegrunn/models/NavigationCategory.dart';
 
-class BarcodeScannerWithController extends StatefulWidget {
-  const BarcodeScannerWithController({super.key});
+class BarcodeScannerView extends StatefulWidget {
+  const BarcodeScannerView({super.key});
 
   @override
-  State<BarcodeScannerWithController> createState() =>
-      _BarcodeScannerWithControllerState();
+  State<BarcodeScannerView> createState() =>
+      _BarcodeScannerViewState();
 }
 
-class _BarcodeScannerWithControllerState
-    extends State<BarcodeScannerWithController>
+class _BarcodeScannerViewState
+    extends State<BarcodeScannerView>
     with SingleTickerProviderStateMixin {
   BarcodeCapture? barcode;
 
@@ -73,6 +73,8 @@ class _BarcodeScannerWithControllerState
       //await Future.delayed(Duration(seconds: 3));
 
       navigationController.resetTab(navigationController.tabIndex);
+      
+      close();
       //navigationController.switchTab(navigationController.tabIndex);
     } else {
       print("Er is iets mis gegaan: $message");
@@ -193,5 +195,17 @@ class _BarcodeScannerWithControllerState
         },
       ),
     );
+  }
+
+  Future<void> close() async {
+    await controller.stop();
+    controller.dispose();
+  }
+
+  @override
+  void dispose() async {
+    close();
+
+    super.dispose();
   }
 }

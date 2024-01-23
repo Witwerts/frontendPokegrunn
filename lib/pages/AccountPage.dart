@@ -28,8 +28,8 @@ class AccountPageState extends NavigationPageState {
     bool result = await accountController.logout();
 
     if(result){
-      for(PageNavigator navigator in navController.navigators.values){
-        navController.resetTab(navigator.tabCategory.tabIndex);
+      for(int n = 0; n < navController.navigators.length; n++){
+        navController.resetTab(n);
       }
 
       navController.switchTab(-1);

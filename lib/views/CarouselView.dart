@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:pokegrunn/models/CarouselList.dart';
+import 'package:pokegrunn/widgets/CarouselList.dart';
 import 'package:pokegrunn/views/BoxContainer.dart';
 
 class CarouselView extends StatefulWidget {

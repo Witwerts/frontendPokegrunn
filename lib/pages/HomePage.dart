@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pokegrunn/controllers/AchievementController.dart';
 import 'package:pokegrunn/models/AchievementModel.dart';
-import 'package:pokegrunn/models/CarouselList.dart';
+import 'package:pokegrunn/widgets/CarouselList.dart';
 import 'package:pokegrunn/models/MainApp.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 import 'package:pokegrunn/views/CarouselView.dart';
@@ -47,21 +47,21 @@ class HomePageState extends NavigationPageState {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CarouselView(
-                  height: 521,
+                  height: 507,
                   items: [
                     CarouselList(
                       title: 'Reeds behaald',
-                      items: [],
+                      items: achievements?.sublist(0, min(5, achievements.length)) ?? [],
                       icon: 'src/icons/map.svg',
                     ),
                     CarouselList(
                       title: 'In de buurt',
-                      items: achievements?.sublist(0, min(6, achievements.length)) ?? [],
+                      items: achievements?.sublist(0, min(5, achievements.length)) ?? [],
                       icon: 'src/icons/map.svg',
                     ),
                     CarouselList(
                       title: 'Reeds bekeken',
-                      items: [],
+                      items: achievements?.sublist(0, min(5, achievements.length)) ?? [],
                       icon: 'src/icons/map.svg',
                     ),
                   ]
