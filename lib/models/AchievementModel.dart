@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokegrunn/controllers/LocationController.dart';
 import 'package:pokegrunn/models/CarouselItem.dart';
 
 class AchievementModel with CarouselItem {

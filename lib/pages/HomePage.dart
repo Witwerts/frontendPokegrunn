@@ -40,6 +40,7 @@ class HomePageState extends NavigationPageState {
           Titlebar(
             title: "Dashboard",
             barHeight: 80,
+            showBack: true,
           ),
           Container(
             padding: EdgeInsets.only(top: 80, bottom: 80),
@@ -56,11 +57,6 @@ class HomePageState extends NavigationPageState {
                     ),
                     CarouselList(
                       title: 'In de buurt',
-                      items: achievements?.sublist(0, min(5, achievements.length)) ?? [],
-                      icon: 'src/icons/map.svg',
-                    ),
-                    CarouselList(
-                      title: 'Reeds bekeken',
                       items: achievements?.sublist(0, min(5, achievements.length)) ?? [],
                       icon: 'src/icons/map.svg',
                     ),

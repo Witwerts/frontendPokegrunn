@@ -50,6 +50,8 @@ class PageNavigatorState extends State<PageNavigator> {
       key: widget.navKey,
       initialRoute: widget.tabCategory.url,
       onGenerateRoute: (RouteSettings settings) {
+        print("blub1");
+
         WidgetBuilder builder;
         String route = settings.name ?? '/notfound';
         NavigationPage page = const EmptyPage();
@@ -61,8 +63,13 @@ class PageNavigatorState extends State<PageNavigator> {
         }
 
         widget.loadedPages[route] = page;
+        widget.currentPage = page;
 
         builder = (BuildContext _) => page;
+        
+        navController.visibility = page.showNavigation;
+
+        //navController.toggleVisibility(page.showNavigation);
 
         return MaterialPageRoute(builder: builder, settings: settings);
       },

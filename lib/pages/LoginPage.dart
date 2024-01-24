@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:pokegrunn/controllers/AccountController.dart';
 import 'package:pokegrunn/controllers/AchievementController.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
@@ -102,7 +103,7 @@ class loginPageState extends NavigationPageState<LoginPage> {
       color: MainApp.color1,
       child: Stack(
         children: [
-          const Titlebar(title: "PokeGrunn", barHeight: 130),
+          const Titlebar(title: "PokeGrunn", barHeight: 130, showBack: false, showQR: false),
           Column(
             children: [
               BoxContainer(

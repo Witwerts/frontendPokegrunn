@@ -20,6 +20,9 @@ class QRScanPage extends NavigationPage {
   bool get loginNeeded => true;
 
   @override
+  bool get showNavigation => false;
+
+  @override
   NavigationPageState createState() => QRScanPageState();
 }
 
@@ -31,10 +34,7 @@ class QRScanPageState extends NavigationPageState {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    NavigationController navController =
-        Provider.of<NavigationController>(context);
-        */
+    NavigationController navController = Provider.of<NavigationController>(context);
 
     return Container(
       child: Column(
@@ -42,11 +42,13 @@ class QRScanPageState extends NavigationPageState {
         children: [
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
+              navController.gotoPage("qrscan");
+
+              /*Navigator.of(context).push(
+                                MaterialPageRoute(
                   builder: (context) => const BarcodeScannerView(),
                 ),
-              );
+              );*/
             },
             child: const Text('+'),
           ),

@@ -9,10 +9,12 @@ import 'package:pokegrunn/pages/LoginPage.dart';
 import 'package:pokegrunn/pages/MapPage.dart';
 import 'package:pokegrunn/pages/QRScanPage.dart';
 import 'package:pokegrunn/pages/SearchPage.dart';
+import 'package:pokegrunn/views/BarcodeScannerView.dart';
 
 class NavigationController extends ChangeNotifier {
   int tabIndex = -1;
   List<NavigationCategory> tabCategories = NavigationCategory.all;
+  bool visibility = true;
 
   Map<int, PageNavigator> navigators = {};
 
@@ -24,7 +26,7 @@ class NavigationController extends ChangeNotifier {
     'account': () => const AccountPage(),
     'achievements': () => const HomePage(),
     'login': () => const LoginPage(),
-    'qrscan': () => const QRScanPage(),
+    'qrscan': () => const BarcodeScannerView(),
   };
 
   NavigationController() {
@@ -55,32 +57,46 @@ class NavigationController extends ChangeNotifier {
 
     this.tabIndex = tabIndex;
 
+    PageNavigator? navigator = getNavigator(tabIndex);
+
+    visibility = navigator?.currentPage?.showNavigation ?? false;
+
     notifyListeners();
 
     return true;
   }
 
-  bool resetTab(int tabIndex){
-    print("reset tab2: ${tabIndex}");
+  PageNavigator? getNavigator(int tabIndex){
+    if (tabIndex >= navigators.length) {
+      return null;
+    }
 
+    return navigators[tabIndex < 0 ? (navigators.length + tabIndex) : tabIndex]!;
+  }
+
+  bool resetTab(int tabIndex){
     if (tabIndex >= navigators.length) {
       return false;
     }
 
-    print("reset tab3: ${tabIndex}");
     PageNavigator? navigator = navigators[tabIndex];
 
     if(navigator == null){
       return false;
     }
 
-    print("reset tab4: ${tabIndex}");
     navigator.reset();
 
-    print("reset tab5: ${tabIndex}");
     notifyListeners();
 
     return true;
+  }
+
+  void toggleVisibility(bool visible){
+    print("update visible?");
+
+    visibility = visible;
+    notifyListeners();
   }
 
   bool gotoPage(String route, [int? tabIndex, bool replace = false]) {
@@ -95,20 +111,28 @@ class NavigationController extends ChangeNotifier {
     }
 
     GlobalKey<NavigatorState>? navKey = navigators[tabIndex]!.navKey;
+    NavigationPage? page = this.getPage(route);
+    PageNavigator? navigator = getNavigator(tabIndex);
 
     if (tabIndex != this.tabIndex) {
       switchTab(tabIndex);
     }
 
     if (replace) {
-      navKey.currentState?.popAndPushNamed(route);
+      navKey.currentState?.popAndPushNamed(route, );
     } else {
-      navKey.currentState?.pushNamed(route);
+      navKey.currentState?.pushNamed(route).then((result){
+      });
     }
 
     notifyListeners();
 
     return true;
+  }
+
+  void pageClosed(NavigationPage prevPage){
+    print("prev page: ");
+    print(prevPage.runtimeType);
   }
 
   NavigationPage? getPage(String route) {

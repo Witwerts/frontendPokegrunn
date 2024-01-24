@@ -2,6 +2,7 @@ import "dart:convert";
 
 import "package:flutter/widgets.dart";
 import "package:http/http.dart";
+import "package:latlong2/latlong.dart";
 import "package:pokegrunn/controllers/DataManager.dart";
 import "package:pokegrunn/models/UserModel.dart";
 import "package:pokegrunn/services/account_service.dart";
@@ -11,6 +12,7 @@ class AccountController with ChangeNotifier {
   AccountController(this.accountService, this.achievementService);
 
   String? _username;
+
   String? get username => _username;
 
   final AccountService accountService;

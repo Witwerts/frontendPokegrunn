@@ -12,16 +12,22 @@ class NavigationPageState<T extends NavigationPage> extends State<T> with Ticker
   @override
   void initState() {
     super.initState();
+
+    print("init");
   }
 
   @override
   void didChangeDependencies(){
     super.didChangeDependencies();
+
+    print("change");
   }
 
   @override
   void didUpdateWidget(T oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    print("update");
   }
 
   @override
