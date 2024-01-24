@@ -30,17 +30,8 @@ class SearchPageState extends NavigationPageState {
             barHeight: 80,
           ),
           Container(
-              padding: EdgeInsets.only(top: 80, bottom: 80),
-              child: ListView(children: [
-                ListTile(
-                    leading: Icon(Icons.map),
-                    title: Text('Kaart'),
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const Achievementoverview()))),
-              ]))
+            padding: EdgeInsets.only(top: 80, bottom: 80),
+          )
         ]));
   }
 }

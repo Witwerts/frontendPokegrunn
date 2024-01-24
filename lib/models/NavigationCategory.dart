@@ -2,14 +2,11 @@ enum NavigationCategory {
   none(tabIndex: -1, url: 'login'),
 
   home(tabIndex: 0, title: "Home", svgIcon: "src/icons/home.svg", url: 'home'),
-  search(
-      tabIndex: 1,
-      title: "Search",
-      svgIcon: "src/icons/search.svg",
-      url: 'search'),
-  map(tabIndex: 2, title: "Map", svgIcon: "src/icons/map.svg", url: 'map'),
+
+  map(tabIndex: 1, title: "Map", svgIcon: "src/icons/map.svg", url: 'map'),
+
   account(
-      tabIndex: 3,
+      tabIndex: 2,
       title: "Account",
       svgIcon: "src/icons/account.svg",
       url: 'account');
@@ -28,7 +25,7 @@ enum NavigationCategory {
 
   static final List<NavigationCategory> all = <NavigationCategory>[
     NavigationCategory.home,
-    NavigationCategory.search,
+    //NavigationCategory.search,
     NavigationCategory.map,
     NavigationCategory.account
   ];
