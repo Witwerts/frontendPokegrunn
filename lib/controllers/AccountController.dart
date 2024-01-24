@@ -13,6 +13,9 @@ class AccountController with ChangeNotifier {
   String? _username;
   String? get username => _username;
 
+  UserModel? _user;
+  UserModel? get user => _user;
+
   final AccountService accountService;
   final AchievementService achievementService;
 
@@ -37,6 +40,7 @@ class AccountController with ChangeNotifier {
 
     if (userData != null) {
       _username = userData.username;
+      _user = userData;
 
       accountService.saveUser(_username!);
 
@@ -55,4 +59,6 @@ class AccountController with ChangeNotifier {
 
     return true;
   }
+
+
 }
