@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokegrunn/models/AchievementModel.dart';
 import 'package:pokegrunn/models/MainApp.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
+import 'package:pokegrunn/views/BoxContainer.dart';
 import 'package:pokegrunn/widgets/Titlebar.dart';
 import '../models/NavigationPage.dart';
 
@@ -24,14 +25,47 @@ class AchievementOverviewPageState
   @override
   Widget build(BuildContext context) {
     AchievementModel achievement = widget.achievement;
-    return Container(
-        color: MainApp.color1,
-        padding: EdgeInsets.zero,
-        child: Stack(children: [
-          Titlebar(
-            title: "${achievement.title}",
-            barHeight: 80,
-          ),
-        ]));
+    return BoxContainer(
+      margin: EdgeInsets.all(5),
+      padding: EdgeInsets.zero,
+      child: Stack(children: [
+        Titlebar(
+          title: "${achievement.title}",
+          barHeight: 80,
+          showBack: true,
+        ),
+        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black.withOpacity(0.2),
+                  width: 1.0,
+                  strokeAlign: BorderSide.strokeAlignInside,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+              ),
+              child: Column(children: [
+                Container(
+                    child: Image.network('${achievement.image}'),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black.withOpacity(0.2),
+                        width: 5.0,
+                        strokeAlign: BorderSide.strokeAlignInside,
+                      ),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(6.0)),
+                    )),
+                Container(
+                  margin: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(3.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 3)),
+                  child: Text('${achievement.description}'),
+                )
+              ])),
+        ])
+      ]),
+    );
   }
 }
