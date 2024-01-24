@@ -8,10 +8,11 @@ import 'package:pokegrunn/models/MainApp.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 import 'package:pokegrunn/views/CarouselView.dart';
 import 'package:pokegrunn/widgets/Titlebar.dart';
+import 'package:pokegrunn/controllers/BarCodeScannerController.dart';
 import 'package:provider/provider.dart';
 import '../models/NavigationPage.dart';
 
-class HomePage extends NavigationPage  {
+class HomePage extends NavigationPage {
   const HomePage({super.key});
 
   @override
@@ -27,13 +28,16 @@ class HomePage extends NavigationPage  {
 class HomePageState extends NavigationPageState {
   @override
   Widget build(BuildContext context) {
-    AchievementController achievementController = Provider.of<AchievementController>(context);
+    AchievementController achievementController =
+        Provider.of<AchievementController>(context);
     List<AchievementModel>? achievements = achievementController.achievements;
+
+    Widget barCodeScannerController = BarcodeScannerController();
 
     print("achievements to show... ${achievements?.length ?? 0}");
 
     return Container(
-      color: MainApp.color1,  
+      color: MainApp.color1,
       padding: EdgeInsets.zero,
       child: Stack(
         children: [
@@ -46,26 +50,25 @@ class HomePageState extends NavigationPageState {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CarouselView(
-                  height: 521,
-                  items: [
-                    CarouselList(
-                      title: 'Reeds behaald',
-                      items: [],
-                      icon: 'src/icons/map.svg',
-                    ),
-                    CarouselList(
-                      title: 'In de buurt',
-                      items: achievements?.sublist(0, min(6, achievements.length)) ?? [],
-                      icon: 'src/icons/map.svg',
-                    ),
-                    CarouselList(
-                      title: 'Reeds bekeken',
-                      items: [],
-                      icon: 'src/icons/map.svg',
-                    ),
-                  ]
-                ),
+                CarouselView(height: 521, items: [
+                  CarouselList(
+                    title: 'Reeds behaald',
+                    items: [],
+                    icon: 'src/icons/map.svg',
+                  ),
+                  CarouselList(
+                    title: 'In de buurt',
+                    items:
+                        achievements?.sublist(0, min(6, achievements.length)) ??
+                            [],
+                    icon: 'src/icons/map.svg',
+                  ),
+                  CarouselList(
+                    title: 'Reeds bekeken',
+                    items: [],
+                    icon: 'src/icons/map.svg',
+                  ),
+                ]),
               ],
             ),
           )

@@ -1,24 +1,26 @@
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pokegrunn/controllers/AccountController.dart';
 import 'package:pokegrunn/controllers/AchievementController.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
+import 'package:pokegrunn/pages/QRScanPage.dart';
 import 'package:pokegrunn/widgets/scanner_error_widget.dart';
+import 'package:pokegrunn/widgets/Confetti.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pokegrunn/models/NavigationCategory.dart';
 
-class BarcodeScannerWithController extends StatefulWidget {
-  const BarcodeScannerWithController({super.key});
+class BarcodeScannerController extends StatefulWidget {
+  const BarcodeScannerController({super.key});
 
   @override
-  State<BarcodeScannerWithController> createState() =>
-      _BarcodeScannerWithControllerState();
+  State<BarcodeScannerController> createState() =>
+      _BarcodeScannerControllerState();
 }
 
-class _BarcodeScannerWithControllerState
-    extends State<BarcodeScannerWithController>
+class _BarcodeScannerControllerState extends State<BarcodeScannerController>
     with SingleTickerProviderStateMixin {
   BarcodeCapture? barcode;
 
@@ -27,10 +29,11 @@ class _BarcodeScannerWithControllerState
     formats: [BarcodeFormat.qrCode],
     facing: CameraFacing.back,
     detectionSpeed: DetectionSpeed.normal,
-    detectionTimeoutMs: 1000,
+    detectionTimeoutMs: 5000,
     // returnImage: false,
   );
 
+  bool hasBeenScannedSuccessfully = false;
   bool isStarted = true;
 
   void _startOrStop() {
@@ -53,8 +56,8 @@ class _BarcodeScannerWithControllerState
     }
   }
 
-  void barcodeDetected() async {
-    AccountController accountController=
+  void barcodeDetected(ConfettiController confettiController) async {
+    AccountController accountController =
         Provider.of<AccountController>(context, listen: false);
     AchievementController achievementController =
         Provider.of<AchievementController>(context, listen: false);
@@ -67,10 +70,17 @@ class _BarcodeScannerWithControllerState
     (success, message) = await achievementController.registerAchievementToUser(
         accountController.username!, (barcode?.barcodes.first.rawValue)!);
 
-    if (success) {
-      print("achievement is geregistreerd!");
+    if (success && !hasBeenScannedSuccessfully) {
+      setState(() {
+        hasBeenScannedSuccessfully = true;
+      });
+      confettiController.play();
 
-      //await Future.delayed(Duration(seconds: 3));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Achievement behaald!')),
+      );
+      print("Achievement is behaald");
+      await Future.delayed(Duration(seconds: 5));
 
       navigationController.resetTab(navigationController.tabIndex);
       //navigationController.switchTab(navigationController.tabIndex);
@@ -81,6 +91,10 @@ class _BarcodeScannerWithControllerState
 
   @override
   Widget build(BuildContext context) {
+    ConfettiController confettiController =
+        ConfettiController(duration: const Duration(seconds: 5));
+    Widget confetti = Confetti(confettiController: confettiController);
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Builder(
@@ -96,13 +110,14 @@ class _BarcodeScannerWithControllerState
                 onDetect: (barcode) {
                   setState(() {
                     this.barcode = barcode;
-                    barcodeDetected();
+                    barcodeDetected(confettiController);
                   });
                 },
               ),
               Align(
                 alignment: Alignment.topCenter,
                 child: Container(
+                  margin: const EdgeInsets.only(top: 15.0),
                   alignment: Alignment.topCenter,
                   height: 100,
                   color: Colors.black.withOpacity(0.4),
@@ -188,6 +203,7 @@ class _BarcodeScannerWithControllerState
                   ),
                 ),
               ),
+              confetti,
             ],
           );
         },

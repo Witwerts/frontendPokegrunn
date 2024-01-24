@@ -26,36 +26,34 @@ class MainApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    NavigationController navController = Provider.of<NavigationController>(context);
+    NavigationController navController =
+        Provider.of<NavigationController>(context);
     Map<int, PageNavigator> navigators = navController.navigators;
 
-    int tabIndex = navController.tabIndex < 0 ? (navigators.length + navController.tabIndex) : navController.tabIndex;
+    int tabIndex = navController.tabIndex < 0
+        ? (navigators.length + navController.tabIndex)
+        : navController.tabIndex;
 
     print("current tabIndex: $tabIndex");
 
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 132, 169, 140)),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 132, 169, 140)),
         useMaterial3: true,
       ),
       home: Scaffold(
-        body: Stack(
-          children: [
-            IndexedStack(
-              index: tabIndex,
-              children: navigators.values.toList()
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: NavigationView(),
-            ),
-          ]
-        ),
+        body: Stack(children: [
+          IndexedStack(index: tabIndex, children: navigators.values.toList()),
+          const Align(
+            alignment: Alignment.bottomCenter,
+            child: NavigationView(),
+          ),
+        ]),
         resizeToAvoidBottomInset: false,
       ),
       debugShowCheckedModeBanner: false,
     );
   }
 }
-

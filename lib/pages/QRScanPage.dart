@@ -31,11 +31,6 @@ class QRScanPageState extends NavigationPageState {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    NavigationController navController =
-        Provider.of<NavigationController>(context);
-        */
-
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +39,7 @@ class QRScanPageState extends NavigationPageState {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const BarcodeScannerWithController(),
+                  builder: (context) => const BarcodeScannerController(),
                 ),
               );
             },

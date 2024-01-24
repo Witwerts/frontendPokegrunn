@@ -43,6 +43,7 @@ dependencies:
   http: ^1.2.0
   carousel_slider: ^4.2.1
   dots_indicator: ^3.0.0
+  confetti: ^0.7.0
 
 dev_dependencies:
   flutter_test:

@@ -3,7 +3,7 @@ import 'package:pokegrunn/models/MainApp.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 import '../models/NavigationPage.dart';
 
-class AchievementsPage extends NavigationPage  {
+class AchievementsPage extends NavigationPage {
   const AchievementsPage({super.key});
 
   @override
@@ -17,7 +17,6 @@ class AchievementsPage extends NavigationPage  {
 }
 
 class AchievementsPageState extends NavigationPageState {
-
   @override
   Widget build(BuildContext context) {
     return Container(
