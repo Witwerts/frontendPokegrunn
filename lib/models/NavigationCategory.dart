@@ -6,7 +6,7 @@ enum NavigationCategory {
       tabIndex: 1,
       title: "Search",
       svgIcon: "src/icons/search.svg",
-      url: 'qrscan'),
+      url: 'search'),
   map(tabIndex: 2, title: "Map", svgIcon: "src/icons/map.svg", url: 'map'),
   account(
       tabIndex: 3,

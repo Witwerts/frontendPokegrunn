@@ -25,6 +25,7 @@ class NavigationController extends ChangeNotifier {
     'achievements': const HomePage(),
     'login': const LoginPage(),
     'qrscan': const QRScanPage(),
+    'achievementsoverview': const QRScanPage(),
   };
 
   NavigationController() {
@@ -60,14 +61,14 @@ class NavigationController extends ChangeNotifier {
     return true;
   }
 
-  bool resetTab(int tabIndex){
+  bool resetTab(int tabIndex) {
     if (tabIndex >= navigators.length) {
       return false;
     }
 
     PageNavigator? navigator = navigators[tabIndex];
 
-    if(navigator == null){
+    if (navigator == null) {
       return false;
     }
 
