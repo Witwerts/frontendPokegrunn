@@ -137,7 +137,7 @@ class NavigationController extends ChangeNotifier {
 
   NavigationPage? getPage(String route) {
     if (pages.containsKey(route)) {
-      return pages[route]!;
+      return pages[route]!();
     }
 
     return null;
