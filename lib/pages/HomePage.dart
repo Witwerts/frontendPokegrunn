@@ -8,7 +8,6 @@ import 'package:pokegrunn/models/MainApp.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 import 'package:pokegrunn/views/CarouselView.dart';
 import 'package:pokegrunn/widgets/Titlebar.dart';
-import 'package:pokegrunn/controllers/BarCodeScannerController.dart';
 import 'package:provider/provider.dart';
 import '../models/NavigationPage.dart';
 
@@ -31,8 +30,6 @@ class HomePageState extends NavigationPageState {
     AchievementController achievementController =
         Provider.of<AchievementController>(context);
     List<AchievementModel>? achievements = achievementController.achievements;
-
-    Widget barCodeScannerController = BarcodeScannerController();
 
     print("achievements to show... ${achievements?.length ?? 0}");
 
