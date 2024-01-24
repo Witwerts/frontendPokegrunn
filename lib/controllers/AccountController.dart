@@ -51,6 +51,8 @@ class AccountController with ChangeNotifier {
 
     _username = null;
 
+    notifyListeners();
+
     return true;
   }
 }

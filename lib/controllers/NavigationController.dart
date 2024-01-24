@@ -62,18 +62,23 @@ class NavigationController extends ChangeNotifier {
   }
 
   bool resetTab(int tabIndex) {
+    print("reset tab2: ${tabIndex}");
+
     if (tabIndex >= navigators.length) {
       return false;
     }
 
+    print("reset tab3: ${tabIndex}");
     PageNavigator? navigator = navigators[tabIndex];
 
     if (navigator == null) {
       return false;
     }
 
+    print("reset tab4: ${tabIndex}");
     navigator.reset();
 
+    print("reset tab5: ${tabIndex}");
     notifyListeners();
 
     return true;
@@ -109,7 +114,7 @@ class NavigationController extends ChangeNotifier {
 
   NavigationPage? getPage(String route) {
     if (pages.containsKey(route)) {
-      return pages[route];
+      return pages[route]!;
     }
 
     return null;
