@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pokegrunn/controllers/AccountController.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
+import 'package:pokegrunn/models/AchievementModel.dart';
+import 'package:pokegrunn/models/MainApp.dart';
 import 'package:pokegrunn/models/NavigationCategory.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 import 'package:pokegrunn/models/PageNavigator.dart';
@@ -39,6 +41,15 @@ class AccountPageState extends NavigationPageState {
     }
   }
 
+  int getTotalPoints(List<AchievementModel> achievements) {
+    int totalPoints = 0;
+    //for (AchievementModel achievement in achievements) {
+    //  totalPoints += achievement.
+    //}
+
+    return totalPoints;
+  }
+
   @override
   Widget build(BuildContext context) {
     AccountController accountController =
@@ -46,40 +57,70 @@ class AccountPageState extends NavigationPageState {
     NavigationController navController =
         Provider.of<NavigationController>(context);
 
+    int totalPoints = getTotalPoints([]);
+
     return Container(
-        color: const Color.fromARGB(255, 240, 240, 240),
-        padding: EdgeInsets.zero,
-        child: Stack(
+      color: MainApp.color1,  
+      padding: EdgeInsets.zero,
+      child: Stack(children: [
+      Titlebar(
+        title: "Account",
+        barHeight: 80,
+      ),
+      Container(
+        padding: EdgeInsets.only(top: 80, bottom: 80),
+        child: Column(
           children: [
-            Titlebar(
-              title: "Profile",
-              barHeight: 80,
+            SizedBox(height: 30,),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                accountController.user?.username??"",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
+              ),
             ),
-            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ElevatedButton(
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "$totalPoints punten",
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Divider(),
+            Expanded(
+              child: Container(
+              margin: EdgeInsetsDirectional.symmetric(horizontal: 5, vertical: 30),
+              padding: const EdgeInsets.fromLTRB(0, 4, 4, 0),
+              alignment: Alignment.bottomLeft,
+              child: ElevatedButton(
                 onPressed: () => logout(),
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  minimumSize: Size.fromHeight(0),
-                  padding: EdgeInsets.all(20),
+                style: ElevatedButton.styleFrom(
+                  primary: MainApp.color2,
+                  onPrimary: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 12.0),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "uitloggen",
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.w400,
-                    ),
+                child: const Text(
+                  "Logout",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
-            ]),
-          ],
-        ));
+            ),)
+          ]
+        ),
+      ),
+    ],)
+    );
   }
 }
