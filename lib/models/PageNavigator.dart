@@ -28,8 +28,10 @@ class PageNavigator extends StatefulWidget {
   void reset(){
     loadedPages.clear();
 
-    navKey.currentState!.popUntil((route) => (route.settings.name != tabCategory.url));
-    navKey.currentState!.pushReplacementNamed(tabCategory.url);
+    print("reset tab: ${tabCategory.index}");
+    
+    navKey.currentState!.popUntil((route) => route.isFirst);
+    navKey.currentState!.popAndPushNamed(tabCategory.url);
   }
 
   @override
