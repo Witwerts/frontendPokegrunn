@@ -26,6 +26,7 @@ class AchievementModel with CarouselItem {
   AchievementModel.fromJson(Map<String, dynamic> json){
     id = json["id"];
     name = json["name"];
+    description = json["description"];
     points = json["points"];
     category = json["category"];
     latitude = json["latitude"];

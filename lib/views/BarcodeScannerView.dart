@@ -12,15 +12,14 @@ import 'package:pokegrunn/widgets/Confetti.dart';
 import 'package:provider/provider.dart';
 import 'package:pokegrunn/models/NavigationCategory.dart';
 
-class BarcodeScannerController extends StatefulWidget {
-  const BarcodeScannerController({super.key});
+class BarcodeScannerView extends StatefulWidget {
+  const BarcodeScannerView({super.key});
 
   @override
-  State<BarcodeScannerController> createState() =>
-      _BarcodeScannerControllerState();
+  State<BarcodeScannerView> createState() => _BarcodeScannerViewState();
 }
 
-class _BarcodeScannerControllerState extends State<BarcodeScannerController>
+class _BarcodeScannerViewState extends State<BarcodeScannerView>
     with SingleTickerProviderStateMixin {
   BarcodeCapture? barcode;
 
@@ -83,6 +82,8 @@ class _BarcodeScannerControllerState extends State<BarcodeScannerController>
       await Future.delayed(Duration(seconds: 5));
 
       navigationController.resetTab(navigationController.tabIndex);
+
+      close();
       //navigationController.switchTab(navigationController.tabIndex);
     } else {
       print("Er is iets mis gegaan: $message");
@@ -209,5 +210,17 @@ class _BarcodeScannerControllerState extends State<BarcodeScannerController>
         },
       ),
     );
+  }
+
+  Future<void> close() async {
+    await controller.stop();
+    controller.dispose();
+  }
+
+  @override
+  void dispose() async {
+    close();
+
+    super.dispose();
   }
 }

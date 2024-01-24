@@ -12,8 +12,8 @@ import "package:pokegrunn/services/achievement_service.dart";
 class AchievementController with ChangeNotifier {
   AchievementController(this.accountService, this.achievementService);
 
-  List<AchievementModel>? _achievements;
-  List<AchievementModel>? get achievements => _achievements;
+  List<AchievementModel> _achievements = [];
+  List<AchievementModel> get achievements => _achievements;
 
   final AccountService accountService;
   final AchievementService achievementService;
@@ -25,7 +25,7 @@ class AchievementController with ChangeNotifier {
     if (achievementList != null) {
       _achievements = achievementList;
 
-      print("${_achievements?.length ?? 0} found");
+      print("${_achievements.length} found");
 
       notifyListeners();
     }

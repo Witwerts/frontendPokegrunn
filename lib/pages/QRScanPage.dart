@@ -7,7 +7,7 @@ import 'package:pokegrunn/models/MainApp.dart';
 import 'package:pokegrunn/models/NavigationCategory.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
-import 'package:pokegrunn/controllers/BarCodeScannerController.dart';
+import 'package:pokegrunn/views/BarcodeScannerView.dart';
 import '../models/NavigationPage.dart';
 
 class QRScanPage extends NavigationPage {
@@ -39,7 +39,7 @@ class QRScanPageState extends NavigationPageState {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const BarcodeScannerController(),
+                  builder: (context) => const BarcodeScannerView(),
                 ),
               );
             },
