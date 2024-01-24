@@ -6,12 +6,14 @@ class Titlebar extends StatelessWidget {
   final String title;
   final Color bgColor;
   final double barHeight;
+  final bool showBack;
 
   const Titlebar({super.key, 
     required this.title,
     this.appBar,
     this.bgColor = MainApp.color3,
-    this.barHeight = kToolbarHeight //standaard hoogte zonder notch
+    this.barHeight = kToolbarHeight, //standaard hoogte zonder notch
+    this.showBack = false,
   });
 
   @override
@@ -36,7 +38,7 @@ class Titlebar extends StatelessWidget {
               appBar: appBar ?? AppBar(
                 backgroundColor: bgColor,
                 foregroundColor: Colors.white,
-                automaticallyImplyLeading: false,
+                automaticallyImplyLeading: showBack,
                 centerTitle: true,
                 title: Text(
                   title,
