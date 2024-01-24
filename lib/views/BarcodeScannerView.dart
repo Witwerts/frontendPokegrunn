@@ -1,3 +1,4 @@
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -9,7 +10,9 @@ import 'package:pokegrunn/models/NavigationPage.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 import 'package:pokegrunn/views/BoxContainer.dart';
 import 'package:pokegrunn/widgets/Titlebar.dart';
+import 'package:pokegrunn/pages/QRScanPage.dart';
 import 'package:pokegrunn/widgets/scanner_error_widget.dart';
+import 'package:pokegrunn/widgets/Confetti.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pokegrunn/models/NavigationCategory.dart';
@@ -34,10 +37,11 @@ class _BarcodeScannerViewState
     formats: [BarcodeFormat.qrCode],
     facing: CameraFacing.back,
     detectionSpeed: DetectionSpeed.normal,
-    detectionTimeoutMs: 1000,
+    detectionTimeoutMs: 5000,
     // returnImage: false,
   );
 
+  bool hasBeenScannedSuccessfully = false;
   bool isStarted = true;
 
   void _startOrStop() {
@@ -60,13 +64,11 @@ class _BarcodeScannerViewState
     }
   }
 
-  void barcodeDetected() async {
-    AccountController accountController=
+  void barcodeDetected(ConfettiController confettiController) async {
+    AccountController accountController =
         Provider.of<AccountController>(context, listen: false);
     AchievementController achievementController =
         Provider.of<AchievementController>(context, listen: false);
-    NavigationController navigationController =
-        Provider.of<NavigationController>(context, listen: false);
 
     bool success = false;
     String message = '';
@@ -74,22 +76,56 @@ class _BarcodeScannerViewState
     (success, message) = await achievementController.registerAchievementToUser(
         accountController.username!, (barcode?.barcodes.first.rawValue)!);
 
-    if (success) {
-      print("achievement is geregistreerd!");
+    if (success && !hasBeenScannedSuccessfully) {
+      setState(() {
+        hasBeenScannedSuccessfully = true;
+      });
+      confettiController.play();
 
-      //await Future.delayed(Duration(seconds: 3));
+      showAlertDialog(context, "Achievement behaald!");
 
-      navigationController.resetTab(navigationController.tabIndex);
-      
+      //print("Achievement is behaald");
       close();
-      //navigationController.switchTab(navigationController.tabIndex);
     } else {
       print("Er is iets mis gegaan: $message");
     }
   }
 
+  showAlertDialog(BuildContext context, String text) {
+    NavigationController navigationController =
+        Provider.of<NavigationController>(context, listen: false);
+
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(text),
+      //content: Text("This is my message."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    ).then((val) {
+      navigationController.resetTab(navigationController.tabIndex);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    ConfettiController confettiController =
+        ConfettiController(duration: const Duration(seconds: 5));
+    Widget confetti = Confetti(confettiController: confettiController);
+
     return Stack(
       children: [
         const Titlebar(
@@ -114,7 +150,7 @@ class _BarcodeScannerViewState
                   onDetect: (barcode) {
                     setState(() {
                       this.barcode = barcode;
-                      barcodeDetected();
+                      barcodeDetected(confettiController);
                     });
                   },
                 ),

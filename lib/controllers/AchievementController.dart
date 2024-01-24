@@ -19,9 +19,10 @@ class AchievementController with ChangeNotifier {
   final AchievementService achievementService;
 
   void loadAchievements() async {
-    List<AchievementModel>? achievementList = await achievementService.fetchAchievements();
+    List<AchievementModel>? achievementList =
+        await achievementService.fetchAchievements();
 
-    if(achievementList != null){
+    if (achievementList != null) {
       _achievements = achievementList;
 
       print("${_achievements.length} found");
@@ -36,7 +37,6 @@ class AchievementController with ChangeNotifier {
         await achievementService.registerAchievementToUser(user, achievement);
 
     if (response != null) {
-      print(response.statusCode == 201);
       return (response.statusCode == 201, response.body);
     }
     return (false, " Response niet gevonden");

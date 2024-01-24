@@ -11,7 +11,7 @@ import 'package:pokegrunn/widgets/Titlebar.dart';
 import 'package:provider/provider.dart';
 import '../models/NavigationPage.dart';
 
-class HomePage extends NavigationPage  {
+class HomePage extends NavigationPage {
   const HomePage({super.key});
 
   @override
@@ -27,13 +27,14 @@ class HomePage extends NavigationPage  {
 class HomePageState extends NavigationPageState {
   @override
   Widget build(BuildContext context) {
-    AchievementController achievementController = Provider.of<AchievementController>(context);
+    AchievementController achievementController =
+        Provider.of<AchievementController>(context);
     List<AchievementModel>? achievements = achievementController.achievements;
 
     print("achievements to show... ${achievements?.length ?? 0}");
 
     return Container(
-      color: MainApp.color1,  
+      color: MainApp.color1,
       padding: EdgeInsets.zero,
       child: Stack(
         children: [
