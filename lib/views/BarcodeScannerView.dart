@@ -60,8 +60,6 @@ class _BarcodeScannerViewState extends State<BarcodeScannerView>
         Provider.of<AccountController>(context, listen: false);
     AchievementController achievementController =
         Provider.of<AchievementController>(context, listen: false);
-    NavigationController navigationController =
-        Provider.of<NavigationController>(context, listen: false);
 
     bool success = false;
     String message = '';
@@ -75,19 +73,42 @@ class _BarcodeScannerViewState extends State<BarcodeScannerView>
       });
       confettiController.play();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Achievement behaald!')),
-      );
-      print("Achievement is behaald");
-      await Future.delayed(Duration(seconds: 5));
+      showAlertDialog(context, "Achievement behaald!");
 
-      navigationController.resetTab(navigationController.tabIndex);
-
+      //print("Achievement is behaald");
       close();
-      //navigationController.switchTab(navigationController.tabIndex);
     } else {
       print("Er is iets mis gegaan: $message");
     }
+  }
+
+  showAlertDialog(BuildContext context, String text) {
+    NavigationController navigationController =
+        Provider.of<NavigationController>(context, listen: false);
+
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(text),
+      //content: Text("This is my message."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    ).then((val) {
+      navigationController.resetTab(navigationController.tabIndex);
+    });
   }
 
   @override
