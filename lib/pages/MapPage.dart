@@ -39,8 +39,8 @@ class MapPageState extends NavigationPageState {
     List<Marker> markers = [];
 
     for (AchievementModel achievement in achievementController.achievements) {
-      double lon = double.parse(achievement.longitude!);
-      double lat = double.parse(achievement.latitude!);
+      double lon = achievement.longitude!;
+      double lat = achievement.latitude!;
 
       markers.add(
         Marker(

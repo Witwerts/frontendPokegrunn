@@ -42,11 +42,10 @@ class CarouselListItem extends StatelessWidget {
                 child: OverflowBox(
                   child: Center(
                       child: Container(
-                    margin: const EdgeInsets.all(6.0),
-                    child: Image.network(
-                      item.icon ?? '',
-                      fit: BoxFit
-                          .cover, // Pas de afbeelding aan binnen de container
+                        margin: const EdgeInsets.all(6.0),
+                        child: Image.network(
+                          item.icon ?? '',
+                          fit: BoxFit.cover,
                     ),
                   )),
                 ),

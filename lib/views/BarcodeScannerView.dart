@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:pokegrunn/models/NavigationCategory.dart';
 
 class BarcodeScannerView extends NavigationPage {
-  const BarcodeScannerView({super.key});
+  BarcodeScannerView() : super(key: GlobalKey());
 
   @override
   bool get showNavigation => false;
@@ -118,6 +118,15 @@ class _BarcodeScannerViewState
     ).then((val) {
       navigationController.resetTab(navigationController.tabIndex);
     });
+  }
+
+  @override
+  void initState() {
+    if(controller.isStarting){
+      close();
+    }
+
+    super.initState();
   }
 
   @override
@@ -222,8 +231,8 @@ class _BarcodeScannerViewState
   }
 
   Future<void> close() async {
-    await controller.stop();
-    controller.dispose();
+    controller.stop();
+    //controller.dispose();
   }
 
   @override

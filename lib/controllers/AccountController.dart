@@ -7,19 +7,23 @@ import "package:pokegrunn/controllers/DataManager.dart";
 import "package:pokegrunn/models/UserModel.dart";
 import "package:pokegrunn/services/account_service.dart";
 import "package:pokegrunn/services/achievement_service.dart";
+import "package:pokegrunn/services/location_service.dart";
 
 class AccountController with ChangeNotifier {
-  AccountController(this.accountService, this.achievementService);
+  AccountController(this.accountService, this.achievementService, this.locationService);
 
   String? _username;
+  LatLng? _position;
 
   String? get username => _username;
+  LatLng? get position => _position;
 
   UserModel? _user;
   UserModel? get user => _user;
 
   final AccountService accountService;
   final AchievementService achievementService;
+  final LocationService locationService;
 
   bool get isLoggedIn => username != null;
 
@@ -39,9 +43,17 @@ class AccountController with ChangeNotifier {
 
   Future<bool> login(String username) async {
     UserModel? userData = await accountService.fetchUser(username);
+    LatLng? position = await locationService.getCurrent();
+
+    locationService.startListening(updateLocation);
 
     if (userData != null) {
       _username = userData.username;
+
+      if(position != null){
+        _position = position;
+      }
+
       _user = userData;
 
       accountService.saveUser(_username!);
@@ -50,6 +62,12 @@ class AccountController with ChangeNotifier {
     }
 
     return false;
+  }
+
+  void updateLocation(LatLng pos){
+    _position = pos;
+
+    notifyListeners();
   }
 
   Future<bool> logout() async {

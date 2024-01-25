@@ -26,7 +26,7 @@ class NavigationController extends ChangeNotifier {
     'account': () => const AccountPage(),
     'achievements': () => const HomePage(),
     'login': () => const LoginPage(),
-    'qrscan': () => const BarcodeScannerView(),
+    'qrscan': () => BarcodeScannerView(),
   };
 
   NavigationController() {

@@ -44,6 +44,7 @@ dependencies:
   carousel_slider: ^4.2.1
   dots_indicator: ^3.0.0
   confetti: ^0.7.0
+  vector_math: ^2.1.4
 
 dev_dependencies:
   flutter_test:

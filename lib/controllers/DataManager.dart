@@ -32,8 +32,8 @@ class DataManager {
     return convertData(response) as Map<String, dynamic>?;
   }
 
-  static Future<Response?> getResponse(String url, [int timeout = 5000]) async {
-    var uri = Uri.parse(url);
+  static Future<Response?> getResponse(String url, [Map<String, String> params = const {}, int timeout = 5000]) async {
+    var uri = Uri.parse(url).replace(queryParameters: params);
     var headers = {"Content-Type": "application/json; charset=UTF-8"};
 
     Response? response = null;
@@ -50,9 +50,8 @@ class DataManager {
     return response;
   }
 
-  static Future<Map<String, dynamic>?> getData(String url,
-      [int timeout = 5000]) async {
-    Response? response = await getResponse(url, timeout);
+  static Future<Map<String, dynamic>?> getData(String url, [Map<String, String> params = const {}, int timeout = 5000]) async {
+    Response? response = await getResponse(url, params, timeout);
 
     return convertData(response) as Map<String, dynamic>?;
   }

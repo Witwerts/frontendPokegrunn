@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:pokegrunn/controllers/AccountController.dart';
 import 'package:pokegrunn/controllers/AchievementController.dart';
 import 'package:pokegrunn/models/AchievementModel.dart';
 import 'package:pokegrunn/widgets/CarouselList.dart';
@@ -25,13 +26,28 @@ class HomePage extends NavigationPage {
 }
 
 class HomePageState extends NavigationPageState {
+  List<AchievementModel> closestList = [];
+
+  void updateLists() async {
+    AchievementController achievementController = Provider.of<AchievementController>(context);
+    AccountController accountController = Provider.of<AccountController>(context);
+
+    //List<AchievementModel> closestList = await achievementController.getClosest(5);
+    List<AchievementModel> closestList = [];
+
+    setState(() {
+      this.closestList = closestList;
+    });
+    
+  }
+
   @override
   Widget build(BuildContext context) {
-    AchievementController achievementController =
-        Provider.of<AchievementController>(context);
-    List<AchievementModel>? achievements = achievementController.achievements;
+    updateLists();
 
-    print("achievements to show... ${achievements?.length ?? 0}");
+    AchievementController achievementController = Provider.of<AchievementController>(context);
+    AccountController accountController = Provider.of<AccountController>(context);
+    List<AchievementModel>? achievements = achievementController.achievements;
 
     return Container(
       color: MainApp.color1,
@@ -57,8 +73,9 @@ class HomePageState extends NavigationPageState {
                       icon: 'src/icons/map.svg',
                     ),
                     CarouselList(
-                      title: 'In de buurt',
-                      items: achievements?.sublist(0, min(5, achievements.length)) ?? [],
+                      //title: 'In de buurt'
+                      title: accountController.position != null ? "${accountController.position!.latitude} ${accountController.position!.longitude}" : '',
+                      items: closestList,
                       icon: 'src/icons/map.svg',
                     ),
                   ]

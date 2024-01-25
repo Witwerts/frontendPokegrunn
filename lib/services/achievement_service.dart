@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:pokegrunn/controllers/DataManager.dart';
 import 'package:pokegrunn/models/AchievementModel.dart';
 import 'dart:convert' as convert;
@@ -21,14 +22,10 @@ class AchievementService {
     return response;
   }
 
-  Future<List<AchievementModel>?> fetchAchievements() async {
-    Response? response = await DataManager.getResponse("$apiEnpoint/achievements");
-
-    print("read achievements1");
+  Future<List<AchievementModel>?> fetchResults(String page, Map<String, String> params) async {
+    Response? response = await DataManager.getResponse("$apiEnpoint/$page", params);
 
     if (response != null && response.statusCode == 200) {
-      print("read achievements2");
-
       List<dynamic>? body = DataManager.convertData(response) as List<dynamic>?;
 
       if(body != null){
@@ -39,5 +36,13 @@ class AchievementService {
     }
 
     return null;
+  }
+
+  Future<List<AchievementModel>?> fetchAll([Map<String, String> params = const {}]){
+    return fetchResults("achievements", params);
+  }
+
+  Future<List<AchievementModel>?> fetchUser([Map<String, String> params = const {}]){
+    return fetchResults("user-achievement", params);
   }
 }

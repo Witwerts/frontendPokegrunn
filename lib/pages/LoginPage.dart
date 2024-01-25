@@ -38,9 +38,7 @@ class loginPageState extends NavigationPageState<LoginPage> {
   }
 
   void checkLoggedIn() async {
-    AchievementController achievementController = Provider.of<AchievementController>(context, listen: false);
     AccountController accountController = Provider.of<AccountController>(context, listen: false);
-    NavigationController navController = Provider.of<NavigationController>(context, listen: false);
 
     bool loggedIn = await accountController.loadUser();
 
@@ -53,27 +51,20 @@ class loginPageState extends NavigationPageState<LoginPage> {
       });
 
       //wait & redirect
-      achievementController.loadAchievements();
-      await Future.delayed(Duration(seconds: 3));
-      navController.switchTab(NavigationCategory.home.tabIndex);
+      loginUser();
       //navController.gotoPage("/", NavigationCategory.home.tabIndex);
     }
   }
 
   void login() async {
-    AchievementController achievementController = Provider.of<AchievementController>(context, listen: false);
     AccountController accountController = Provider.of<AccountController>(context, listen: false);
-    NavigationController navController = Provider.of<NavigationController>(context, listen: false);
 
     try {
       var result = await accountController.login(_usernameInputController.text);
 
       if (result) {
         if (context.mounted) {
-          achievementController.loadAchievements();
-
-          await Future.delayed(Duration(seconds: 3));
-          navController.switchTab(NavigationCategory.home.tabIndex);
+          checkLoggedIn();
         }
       } else {
         if (context.mounted) {
@@ -92,6 +83,21 @@ class loginPageState extends NavigationPageState<LoginPage> {
         ));
       }
     }
+  }
+
+  void loginUser() async {
+    AchievementController achievementController = Provider.of<AchievementController>(context, listen: false);
+    AccountController accountController = Provider.of<AccountController>(context, listen: false);
+    NavigationController navController = Provider.of<NavigationController>(context, listen: false);
+
+    print("log1");
+    achievementController.loadAchievements();
+    print("log2");
+    await Future.delayed(Duration(seconds: 3));
+
+    print("log3");
+
+    navController.switchTab(NavigationCategory.home.tabIndex);
   }
 
   @override
