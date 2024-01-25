@@ -159,7 +159,10 @@ class loginPageState extends NavigationPageState<LoginPage> {
                       padding: const EdgeInsets.fromLTRB(0, 4, 4, 0),
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
-                        onPressed: () => login(),
+                        onPressed: () => {
+                          FocusManager.instance.primaryFocus?.unfocus(),
+                          login(),
+                        },
                         style: ElevatedButton.styleFrom(
                           primary: MainApp.color2,
                           onPrimary: Colors.white,

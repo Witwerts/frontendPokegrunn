@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokegrunn/models/AchievementModel.dart';
+import 'package:pokegrunn/pages/AchievementOverview.dart';
 
 class MapItemController with ChangeNotifier {
   bool showDetails = false;
@@ -38,6 +39,7 @@ class _MapItemState extends State<MapItem> {
     controller = MapItemController();
   }
 
+  // Build the overlay content
   Widget buildOverlay() {
     AchievementModel achievement = widget.achievement;
     final markerPosition = markerRenderBox.localToGlobal(Offset.zero);
@@ -50,48 +52,76 @@ class _MapItemState extends State<MapItem> {
     double top = (markerPosition.dy - 150).clamp(minTop, maxTop);
     double left = (markerPosition.dx - 125).clamp(minLeft, maxLeft);
 
-    return Positioned(
-      top: top,
-      left: left,
-      child: Material(
-        child: Container(
-          width: 250,
-          padding: const EdgeInsets.all(16),
-          color: Colors.white,
-          child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              achievement.name ?? "",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: () {
+              controller.closeDetails();
+              overlayEntry.remove();
+            },
+            child: Container(
+              color: Colors.transparent,
+            ),
+          ),
+        ),
+        Positioned(
+          top: top,
+          left: left,
+          child: Material(
+            child: Container(
+              width: 250,
+              padding: const EdgeInsets.all(16),
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextButton(
+                    onPressed: () => {Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Achievementoverview(
+                          achievement: achievement,
+                        ),
+                      ),
+                    ),
+                    controller.closeDetails(),
+                    overlayEntry.remove()},
+                    child: Text(
+                      achievement.name ?? "",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    "Points: ${achievement.points ?? 0}",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    achievement.description ?? "",
+                    maxLines: 10,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      controller.closeDetails();
+                      overlayEntry.remove();
+                    },
+                    child: Text('Close'),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              "Points: ${achievement.points ?? 0}",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              achievement.description ?? "",
-              style: TextStyle(fontSize: 14),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.closeDetails();
-                overlayEntry.remove();
-              },
-              child: Text('Close'),
-            ),
-          ],
+          ),
         ),
-        ),
-      ),
+      ],
     );
   }
 
