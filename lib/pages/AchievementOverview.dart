@@ -39,7 +39,15 @@ class AchievementOverviewPageState
               height: 460,
               child: Column(children: [
                 Container(
-                    child: Image.network('${achievement.image}'),
+                    child: 
+                    achievement.image != null || achievement.image == "" ?
+                      Image.network('${achievement.image}')
+                    :
+                    Icon(
+                      Icons.image_not_supported, // Use your fallback icon here
+                      size: 40.0,
+                      color: Colors.grey,
+                    ),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Colors.black.withOpacity(0.2),
@@ -53,18 +61,23 @@ class AchievementOverviewPageState
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Icon(Icons.calendar_month_rounded),
-                      Text('${achievement.startDate} - ${achievement.endDate}',
+                      if (achievement.startTime != null && achievement.endTime != null)
+                        Icon(Icons.calendar_month_rounded),
+                      if (achievement.startTime != null && achievement.endTime != null)
+                        Text('${achievement.startDate} - ${achievement.endDate}',
                           style: TextStyle(fontSize: 16)),
                     ]),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Icon(Icons.access_time),
-                      Text('${achievement.startTime} - ${achievement.endTime}',
-                          style: TextStyle(fontSize: 16)),
-                    ]),
+                      if (achievement.startTime != null && achievement.endTime != null)
+                        const Icon(Icons.access_time),
+                      if (achievement.startTime != null && achievement.endTime != null)
+                        Text('${achievement.startTime} - ${achievement.endTime}',
+                            style: TextStyle(fontSize: 16)),
+                      ]
+                    ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,7 +91,7 @@ class AchievementOverviewPageState
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.black, width: 1)),
                     child: Column(children: [
-                      Text('${achievement.description}'),
+                      Text('${achievement.description}', maxLines: 10, ),
                       Text('Te behalen punten: ${achievement.points}',
                           style: TextStyle(fontSize: 17))
                     ]))
