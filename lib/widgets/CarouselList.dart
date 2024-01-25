@@ -64,46 +64,6 @@ class CarouselListState extends State<CarouselList> {
                         return CarouselListItem(item, EdgeInsets.only(bottom: !isLast ? 4.0 : 0.0));
                       }).toList(),
                     )
-                    // Column(
-                    //   children: 
-                    //     Container(
-                    //       height: 70,
-                    //       padding: EdgeInsets.zero,
-                    //       margin: EdgeInsets.zero,
-                    //       color: Colors.red,
-                    //     ),
-                    //     SizedBox(height: 2,),
-                    //     Container(
-                    //       height: 70,
-                    //       padding: EdgeInsets.zero,
-                    //       color: Colors.red,
-                    //     ),
-                    //     SizedBox(height: 2,),
-                    //     Container(
-                    //       height: 70,
-                    //       padding: EdgeInsets.zero,
-                    //       color: Colors.red,
-                    //     ),
-                    //     SizedBox(height: 2,),
-                    //     Container(
-                    //       height: 70,
-                    //       padding: EdgeInsets.zero,
-                    //       color: Colors.red,
-                    //     ),
-                    //     SizedBox(height: 2,),
-                    //     Container(
-                    //       height: 70,
-                    //       padding: EdgeInsets.zero,
-                    //       color: Colors.red,
-                    //     ),
-                    //     SizedBox(height: 2,),
-                    //     Container(
-                    //       height: 70,
-                    //       padding: EdgeInsets.zero,
-                    //       color: Colors.red,
-                    //     ),
-                    //   ],
-                    // )
                   ),
                 ],
               )

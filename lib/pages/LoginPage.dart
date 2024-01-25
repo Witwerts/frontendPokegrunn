@@ -85,11 +85,10 @@ class loginPageState extends NavigationPageState<LoginPage> {
 
   void loginUser() async {
     AchievementController achievementController = Provider.of<AchievementController>(context, listen: false);
-    AccountController accountController = Provider.of<AccountController>(context, listen: false);
     NavigationController navController = Provider.of<NavigationController>(context, listen: false);
 
-    achievementController.loadAchievements();
     await Future.delayed(Duration(seconds: 3));
+    await achievementController.loadAchievements();
 
     navController.switchTab(NavigationCategory.home.tabIndex);
   }

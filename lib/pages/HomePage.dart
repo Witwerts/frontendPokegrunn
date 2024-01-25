@@ -29,8 +29,7 @@ class HomePageState extends NavigationPageState {
   List<AchievementModel> closestList = [];
   List<AchievementModel> recentList = [];
 
-  void updateLists(AchievementController achievementController, AccountController accountController) async {
-    //List<AchievementModel> closestList = await achievementController.getClosest(5);
+  Future<void> updateLists(AchievementController achievementController, AccountController accountController) async {
     List<AchievementModel> recentList = await achievementController.getRecent(accountController.username, 5);
     
     this.recentList = recentList;

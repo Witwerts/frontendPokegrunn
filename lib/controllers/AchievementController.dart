@@ -24,7 +24,7 @@ class AchievementController with ChangeNotifier {
   final AchievementService achievementService;
   final LocationService locationService;
 
-  void loadAchievements() async {
+  Future<void> loadAchievements() async {
     List<AchievementModel>? achievementList =
         await achievementService.fetchAll();
 
@@ -36,11 +36,14 @@ class AchievementController with ChangeNotifier {
   }
 
   Future<(bool, String)> registerAchievementToUser(
-      String user, String achievement) async {
+    String user, String achievement) async {
     Response? response =
-        await achievementService.registerAchievementToUser(user, achievement);
+    
+    await achievementService.registerAchievementToUser(user, achievement);
 
     if (response != null) {
+      notifyListeners();
+
       return (response.statusCode == 201, response.body);
     }
     return (false, " Response niet gevonden");

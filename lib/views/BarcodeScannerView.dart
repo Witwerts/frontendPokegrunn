@@ -83,7 +83,6 @@ class _BarcodeScannerViewState
       confettiController.play();
 
       showAlertDialog(context, "Achievement behaald!");
-      close();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -117,7 +116,8 @@ class _BarcodeScannerViewState
         return alert;
       },
     ).then((val) {
-      navigationController.resetTab(navigationController.tabIndex);
+      close();
+      Navigator.pop(context);
     });
   }
 
