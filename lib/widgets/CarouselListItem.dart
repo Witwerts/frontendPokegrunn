@@ -41,58 +41,73 @@ class CarouselListItem extends StatelessWidget {
               child: ClipOval(
                 child: OverflowBox(
                   child: Center(
-                      child: Container(
-                        margin: const EdgeInsets.all(6.0),
-                        child: Image.network(
-                          item.icon ?? '',
-                          fit: BoxFit.cover,
-                    ),
-                  )),
+                    child: item.icon != null || item.icon == ""
+                        ? Container(
+                            margin: const EdgeInsets.all(6.0),
+                            child: Image.network(
+                              item.icon ?? "",
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Icon(
+                            Icons.image_not_supported, // Use your fallback icon here
+                            size: 40.0,
+                            color: Colors.grey,
+                          ),
+                  ),
                 ),
               ),
             ),
           ),
           Expanded(
-              flex: 6, // Flex voor de rode container
-              child: GestureDetector(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Achievementoverview(
-                            achievement: item as AchievementModel))),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 5.0, vertical: 4.0),
-                  width: double.infinity,
-                  height: double.infinity, // Hoogte wordt automatisch verdeeld
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.title ?? '',
-                        style: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500,
-                            height: 1.3,
-                            overflow: TextOverflow.ellipsis,
-                            color: MainApp.color3),
-                      ),
-                      Expanded(
-                        child: Text(
-                          item.desc ??
-                              'dsdsdsdjksjdsfjsdjkjkdskj sasasdds ssadasasddssda saddasdasdsaads',
-                          maxLines: 2,
-                          style: const TextStyle(
-                              fontSize: 14.0,
-                              height: 1.1,
-                              overflow: TextOverflow.ellipsis,
-                              color: Colors.grey),
-                        ),
-                      ),
-                    ],
+            flex: 6,
+            child: GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Achievementoverview(
+                    achievement: item as AchievementModel,
                   ),
                 ),
-              ))
+              ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 5.0,
+                  vertical: 4.0,
+                ),
+                width: double.infinity,
+                height: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.title ?? '',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                        height: 1.3,
+                        overflow: TextOverflow.ellipsis,
+                        color: MainApp.color3,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        item.desc ??
+                            'dsdsdsdjksjdsfjsdjkjkdskj sasasdds ssadasasddssda saddasdasdsaads',
+                        maxLines: 2,
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          height: 1.1,
+                          overflow: TextOverflow.ellipsis,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

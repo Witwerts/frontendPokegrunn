@@ -163,6 +163,7 @@ class _BarcodeScannerViewState
                     });
                   },
                 ),
+                confetti,
                 Align(
                   alignment: Alignment.bottomCenter,
                   child:  Container(
