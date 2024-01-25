@@ -90,12 +90,8 @@ class loginPageState extends NavigationPageState<LoginPage> {
     AccountController accountController = Provider.of<AccountController>(context, listen: false);
     NavigationController navController = Provider.of<NavigationController>(context, listen: false);
 
-    print("log1");
     achievementController.loadAchievements();
-    print("log2");
     await Future.delayed(Duration(seconds: 3));
-
-    print("log3");
 
     navController.switchTab(NavigationCategory.home.tabIndex);
   }

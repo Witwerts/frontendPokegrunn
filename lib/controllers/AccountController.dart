@@ -45,13 +45,14 @@ class AccountController with ChangeNotifier {
     UserModel? userData = await accountService.fetchUser(username);
     LatLng? position = await locationService.getCurrent();
 
-    locationService.startListening(updateLocation);
+    await locationService.startListening(updateLocation);
 
     if (userData != null) {
       _username = userData.username;
 
       if(position != null){
         _position = position;
+        locationService.currentPosition = position;
       }
 
       _user = userData;
@@ -60,6 +61,8 @@ class AccountController with ChangeNotifier {
 
       return true;
     }
+
+    notifyListeners();
 
     return false;
   }
@@ -72,6 +75,8 @@ class AccountController with ChangeNotifier {
 
   Future<bool> logout() async {
     await accountService.clearUser();
+
+    locationService.stoplistening();
 
     _username = null;
 

@@ -27,18 +27,23 @@ class HomePage extends NavigationPage {
 
 class HomePageState extends NavigationPageState {
   List<AchievementModel> closestList = [];
+  List<AchievementModel> recentList = [];
+
+  @override
+  void initState(){
+    WidgetsBinding.instance.addPostFrameCallback((_) => updateLists());
+  }
 
   void updateLists() async {
-    AchievementController achievementController = Provider.of<AchievementController>(context);
-    AccountController accountController = Provider.of<AccountController>(context);
+    AchievementController achievementController = Provider.of<AchievementController>(context, listen: false);
+    AccountController accountController = Provider.of<AccountController>(context, listen: false);
 
     //List<AchievementModel> closestList = await achievementController.getClosest(5);
-    List<AchievementModel> closestList = [];
+    List<AchievementModel> closestList = await achievementController.getClosest(5);
+    List<AchievementModel> recentList = await achievementController.getRecent(accountController.username, 5);
 
-    setState(() {
-      this.closestList = closestList;
-    });
-    
+    this.closestList = closestList;
+    this.recentList = recentList;
   }
 
   @override
@@ -69,12 +74,11 @@ class HomePageState extends NavigationPageState {
                   items: [
                     CarouselList(
                       title: 'Reeds behaald',
-                      items: achievements?.sublist(0, min(5, achievements.length)) ?? [],
+                      items: recentList,
                       icon: 'src/icons/map.svg',
                     ),
                     CarouselList(
-                      //title: 'In de buurt'
-                      title: accountController.position != null ? "${accountController.position!.latitude} ${accountController.position!.longitude}" : '',
+                      title: 'In de buurt',
                       items: closestList,
                       icon: 'src/icons/map.svg',
                     ),

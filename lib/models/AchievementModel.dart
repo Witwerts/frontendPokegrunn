@@ -45,7 +45,4 @@ class AchievementModel with CarouselItem {
     endTime = json["end_time"];
     image = json["image_url"];
   }
-  
-  @override
-  int get id => throw UnimplementedError();
 }

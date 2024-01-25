@@ -39,7 +39,7 @@ class DataManager {
     Response? response = null;
 
     try {
-      print("get data: $url");
+      print("get data: ${uri.toString()}");
       response = await http
           .get(uri, headers: headers)
           .timeout(Duration(milliseconds: timeout));

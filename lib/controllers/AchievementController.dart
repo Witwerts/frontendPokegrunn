@@ -47,7 +47,7 @@ class AchievementController with ChangeNotifier {
   }
 
   Future<List<AchievementModel>> getClosest(int max) async {
-    LatLng? currentPos = await locationService.getCurrent();
+    LatLng? currentPos = locationService.currentPosition;
 
     if(currentPos == null){
       return [];
@@ -59,6 +59,22 @@ class AchievementController with ChangeNotifier {
       "longitude": currentPos.longitude.toString()
     }) ?? [];
 
-    return achievements.sublist(0, min(5, achievements.length));
+    return achievements.sublist(0, min(max, achievements.length));
+  }
+
+  Future<List<AchievementModel>> getRecent(String? username, int max) async {
+    LatLng? currentPos = locationService.currentPosition;
+
+    if(currentPos == null || username == null){
+      return [];
+    }
+
+    List<AchievementModel> achievements = await achievementService.fetchUser({
+      "username": username,
+    }) ?? [];
+
+    achievements.sort((a, b) => b.id!.compareTo(a.id!));
+
+    return achievements.sublist(0, min(max, achievements.length));
   }
 }

@@ -31,23 +31,25 @@ class LocationService {
   }
 
   LatLng? currentPosition;
-  final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
-  StreamSubscription<Position>? _locationStreamSubscription;
 
-  void startListening([void Function(LatLng)? onUpdate]){
+  Future<void> startListening([void Function(LatLng)? onUpdate]) async{
+    await updatePosition(onUpdate);
+
     listenTimer = Timer.periodic(Duration(seconds: 10), (Timer t) async {
-      LatLng? pos = await getCurrent();
-
-      if(onUpdate != null && pos != null){
-        onUpdate(pos);
-      }
+      updatePosition(onUpdate);
     });
   }
 
-  void stoplistening(){
-    if (_locationStreamSubscription != null) {
-      _locationStreamSubscription!.cancel();
+  Future<void> updatePosition([void Function(LatLng)? onUpdate]) async {
+    LatLng? pos = await getCurrent();
+
+    if(onUpdate != null && pos != null){
+      onUpdate(pos);
     }
+  }
+
+  void stoplistening(){
+    listenTimer?.cancel();
   }
 
   Future<LatLng?> getCurrent() async {

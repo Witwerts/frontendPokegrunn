@@ -22,8 +22,8 @@ class AchievementService {
     return response;
   }
 
-  Future<List<AchievementModel>?> fetchResults(String page, Map<String, String> params) async {
-    Response? response = await DataManager.getResponse("$apiEnpoint/$page", params);
+  Future<List<AchievementModel>?> fetchAll([Map<String, String> params = const {}]) async {
+    Response? response = await DataManager.getResponse("$apiEnpoint/achievements", params);
 
     if (response != null && response.statusCode == 200) {
       List<dynamic>? body = DataManager.convertData(response) as List<dynamic>?;
@@ -38,11 +38,21 @@ class AchievementService {
     return null;
   }
 
-  Future<List<AchievementModel>?> fetchAll([Map<String, String> params = const {}]){
-    return fetchResults("achievements", params);
-  }
+  Future<List<AchievementModel>?> fetchUser([Map<String, String> params = const {}]) async {
+    Response? response = await DataManager.getResponse("$apiEnpoint/user-achievements", params);
 
-  Future<List<AchievementModel>?> fetchUser([Map<String, String> params = const {}]){
-    return fetchResults("user-achievement", params);
+    if (response != null && response.statusCode == 200) {
+      List<dynamic>? body = DataManager.convertData(response) as List<dynamic>?;
+
+      if(body != null){
+        List<AchievementModel> achList = body!.map((ach){
+          return AchievementModel.fromJson(ach["achievement"]);
+        }).toList();
+
+        return achList;
+      }
+    }
+
+    return null;
   }
 }
