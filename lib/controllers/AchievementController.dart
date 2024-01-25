@@ -76,8 +76,6 @@ class AchievementController with ChangeNotifier {
     }
 
     totalPoints = points;
-
-    notifyListeners();
   }
 
   Future<List<AchievementModel>> getRecent(String? username, int max) async {
