@@ -61,10 +61,6 @@ class CarouselListState extends State<CarouselList> {
                     child: Column(
                       children: widget.items.map((item) {
                         bool isLast = widget.items.indexOf(item) == (widget.items.length-1);
-
-                        print(widget.items.indexOf(item));
-                        print(isLast);
-
                         return CarouselListItem(item, EdgeInsets.only(bottom: !isLast ? 4.0 : 0.0));
                       }).toList(),
                     )

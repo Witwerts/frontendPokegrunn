@@ -29,30 +29,29 @@ class HomePageState extends NavigationPageState {
   List<AchievementModel> closestList = [];
   List<AchievementModel> recentList = [];
 
-  @override
-  void initState(){
-    WidgetsBinding.instance.addPostFrameCallback((_) => updateLists());
-  }
-
-  void updateLists() async {
-    AchievementController achievementController = Provider.of<AchievementController>(context, listen: false);
-    AccountController accountController = Provider.of<AccountController>(context, listen: false);
-
+  void updateLists(AchievementController achievementController, AccountController accountController) async {
     //List<AchievementModel> closestList = await achievementController.getClosest(5);
-    List<AchievementModel> closestList = await achievementController.getClosest(5);
     List<AchievementModel> recentList = await achievementController.getRecent(accountController.username, 5);
+    
+    setState(() {
+      this.recentList = recentList;
+    });
 
-    this.closestList = closestList;
-    this.recentList = recentList;
+    List<AchievementModel> closestList = await achievementController.getClosest(5);
+    
+    setState(() {
+      this.closestList = closestList;
+    });
+
+    await achievementController.savePoints(accountController.username);
   }
 
   @override
   Widget build(BuildContext context) {
-    updateLists();
-
     AchievementController achievementController = Provider.of<AchievementController>(context);
     AccountController accountController = Provider.of<AccountController>(context);
-    List<AchievementModel>? achievements = achievementController.achievements;
+
+    updateLists(achievementController, accountController);
 
     return Container(
       color: MainApp.color1,

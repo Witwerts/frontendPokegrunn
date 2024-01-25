@@ -49,8 +49,6 @@ class NavigationController extends ChangeNotifier {
   bool switchTab(int? tabIndex) {
     tabIndex = tabIndex ?? this.tabIndex;
 
-    print("switch from tab ${this.tabIndex} to ${tabIndex}");
-
     if (tabIndex >= navigators.length) {
       return false;
     }
@@ -93,8 +91,6 @@ class NavigationController extends ChangeNotifier {
   }
 
   void toggleVisibility(bool visible){
-    print("update visible?");
-
     visibility = visible;
     notifyListeners();
   }
@@ -131,8 +127,6 @@ class NavigationController extends ChangeNotifier {
   }
 
   void pageClosed(NavigationPage prevPage){
-    print("prev page: ");
-    print(prevPage.runtimeType);
   }
 
   NavigationPage? getPage(String route) {

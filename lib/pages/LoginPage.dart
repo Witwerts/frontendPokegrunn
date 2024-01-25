@@ -43,8 +43,6 @@ class loginPageState extends NavigationPageState<LoginPage> {
     bool loggedIn = await accountController.loadUser();
 
     if(loggedIn){
-      print("already logged in...");
-
       setState(() {
         _usernameInputController.text = accountController.username!;
         _passwordInputController.text = "password";

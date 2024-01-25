@@ -18,6 +18,8 @@ class AchievementController with ChangeNotifier {
   List<AchievementModel> _achievements = [];
   List<AchievementModel> get achievements => _achievements;
 
+  int totalPoints = 0;
+
   final AccountService accountService;
   final AchievementService achievementService;
   final LocationService locationService;
@@ -28,8 +30,6 @@ class AchievementController with ChangeNotifier {
 
     if (achievementList != null) {
       _achievements = achievementList;
-
-      print("${_achievements.length} found");
 
       notifyListeners();
     }
@@ -62,10 +62,26 @@ class AchievementController with ChangeNotifier {
     return achievements.sublist(0, min(max, achievements.length));
   }
 
-  Future<List<AchievementModel>> getRecent(String? username, int max) async {
-    LatLng? currentPos = locationService.currentPosition;
+  Future<void> savePoints(String? username) async {
+    if (username == null) {
+      return;
+    }
 
-    if(currentPos == null || username == null){
+    List<AchievementModel> recent = await getRecent(username, (10e5).toInt());
+
+    int points = 0;
+
+    for (AchievementModel achievement in recent) {
+      points += achievement.points??0;
+    }
+
+    totalPoints = points;
+
+    notifyListeners();
+  }
+
+  Future<List<AchievementModel>> getRecent(String? username, int max) async {
+    if(username == null){
       return [];
     }
 

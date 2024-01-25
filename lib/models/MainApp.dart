@@ -34,8 +34,6 @@ class MainApp extends StatelessWidget {
         ? (navigators.length + navController.tabIndex)
         : navController.tabIndex;
 
-    print("current tabIndex: $tabIndex");
-
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(

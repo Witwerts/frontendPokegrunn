@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokegrunn/controllers/AccountController.dart';
+import 'package:pokegrunn/controllers/AchievementController.dart';
 import 'package:pokegrunn/controllers/NavigationController.dart';
 import 'package:pokegrunn/models/AchievementModel.dart';
 import 'package:pokegrunn/models/MainApp.dart';
@@ -40,24 +41,14 @@ class AccountPageState extends NavigationPageState {
       navController.switchTab(-1);
     }
   }
-
-  int getTotalPoints(List<AchievementModel> achievements) {
-    int totalPoints = 0;
-    //for (AchievementModel achievement in achievements) {
-    //  totalPoints += achievement.
-    //}
-
-    return totalPoints;
-  }
+  
 
   @override
   Widget build(BuildContext context) {
     AccountController accountController =
         Provider.of<AccountController>(context);
-    NavigationController navController =
-        Provider.of<NavigationController>(context);
-
-    int totalPoints = getTotalPoints([]);
+    AchievementController achievementController = 
+        Provider.of<AchievementController>(context);
 
     return Container(
       color: MainApp.color1,  
@@ -85,7 +76,7 @@ class AccountPageState extends NavigationPageState {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "$totalPoints punten",
+                "${achievementController.totalPoints} punten",
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 20,

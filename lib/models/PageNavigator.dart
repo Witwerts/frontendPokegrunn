@@ -21,14 +21,10 @@ class PageNavigator extends StatefulWidget {
     this.active = false,
   }) {
     navKey = GlobalKey<NavigatorState>();
-
-    print("navigatie key: $navKey");
   }
 
   void reset(){
     loadedPages.clear();
-
-    print("reset tab: ${tabCategory.index}");
     
     navKey.currentState!.popUntil((route) => route.isFirst);
     navKey.currentState!.popAndPushNamed(tabCategory.url);
@@ -50,8 +46,6 @@ class PageNavigatorState extends State<PageNavigator> {
       key: widget.navKey,
       initialRoute: widget.tabCategory.url,
       onGenerateRoute: (RouteSettings settings) {
-        print("blub1");
-
         WidgetBuilder builder;
         String route = settings.name ?? '/notfound';
         NavigationPage page = const EmptyPage();

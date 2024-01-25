@@ -83,11 +83,12 @@ class _BarcodeScannerViewState
       confettiController.play();
 
       showAlertDialog(context, "Achievement behaald!");
-
-      //print("Achievement is behaald");
       close();
     } else {
-      print("Er is iets mis gegaan: $message");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('De achievement is niet succesvol gescanned.')),
+      );
     }
   }
 

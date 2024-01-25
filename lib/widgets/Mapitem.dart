@@ -6,14 +6,11 @@ class MapItemController with ChangeNotifier {
   bool showDetails = false;
 
   void openDetails() {
-    print("open details?");
-
     showDetails = true;
     notifyListeners();
   }
 
   void closeDetails() {
-    print("close details?");
     showDetails = false;
     notifyListeners();
   }

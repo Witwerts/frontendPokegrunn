@@ -25,8 +25,6 @@ class LocationService {
     double c = 2 * atan2(sqrt(a), sqrt(1-a));
     double d = R * c;
 
-    print(d);
-
     return d; 
   }
 
