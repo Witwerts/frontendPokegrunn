@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokegrunn/models/AchievementModel.dart';
+import 'package:pokegrunn/pages/AchievementOverview.dart';
 
 class MapItemController with ChangeNotifier {
   bool showDetails = false;
@@ -72,12 +73,24 @@ class _MapItemState extends State<MapItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    achievement.name ?? "",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  TextButton(
+                    onPressed: () => {Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Achievementoverview(
+                          achievement: achievement,
+                        ),
+                      ),
                     ),
+                    controller.closeDetails(),
+                    overlayEntry.remove()},
+                    child: Text(
+                      achievement.name ?? "",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
                   ),
                   SizedBox(height: 8),
                   Text(
