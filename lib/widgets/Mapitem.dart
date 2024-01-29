@@ -54,8 +54,8 @@ class _MapItemState extends State<MapItem> {
         Positioned.fill(
           child: GestureDetector(
             onTap: () {
-              controller.closeDetails();
               overlayEntry.remove();
+              controller.closeDetails();
             },
             child: Container(
               color: Colors.transparent,
@@ -82,8 +82,8 @@ class _MapItemState extends State<MapItem> {
                         ),
                       ),
                     ),
-                    controller.closeDetails(),
-                    overlayEntry.remove()},
+                    overlayEntry.remove(),
+                    controller.closeDetails(),},
                     child: Text(
                       achievement.name ?? "",
                       style: TextStyle(
@@ -108,8 +108,8 @@ class _MapItemState extends State<MapItem> {
                   ),
                   TextButton(
                     onPressed: () {
-                      controller.closeDetails();
                       overlayEntry.remove();
+                      controller.closeDetails();
                     },
                     child: Text('Close'),
                   ),
