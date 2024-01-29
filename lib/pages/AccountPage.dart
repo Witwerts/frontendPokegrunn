@@ -158,7 +158,7 @@ class AccountPageState extends NavigationPageState {
                                   ),
                                   child: BoxContainer(
                                     radius: const BorderRadius.all(Radius.circular(6)),
-                                    margin: EdgeInsets.zero,
+                                    margin: EdgeInsets.only(bottom: !isLast ? 4 : 0),
                                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                                     borderColor: Colors.black.withOpacity(0.2),
                                     child: Row(
