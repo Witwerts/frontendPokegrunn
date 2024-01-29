@@ -33,8 +33,10 @@ class LocationService {
   Future<void> startListening([void Function(LatLng)? onUpdate]) async{
     await updatePosition(onUpdate);
 
-    listenTimer = Timer.periodic(Duration(seconds: 10), (_) async {
-      if(listenTimer != null && listenTimer!.isActive){
+    stoplistening();
+
+    listenTimer = Timer.periodic(Duration(seconds: 10), (timer) async {
+      if(timer.isActive){
         await updatePosition(onUpdate);
       }
     });
@@ -49,7 +51,10 @@ class LocationService {
   }
 
   void stoplistening(){
-    listenTimer?.cancel();
+    if(listenTimer != null){
+      listenTimer!.cancel();
+    }
+
     listenTimer = null;
   }
 

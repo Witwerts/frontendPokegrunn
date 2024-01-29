@@ -13,7 +13,7 @@ class LocationController extends MapControllerImpl {
 
   LocationController(this.animationManager);
 
-  void FlyTo(LatLng newPos, double newZoom, [int duration = 2000, Curve curveType = Curves.easeInBack]) {
+  Future<void> FlyTo(LatLng newPos, double newZoom, [int duration = 2000, Curve curveType = Curves.easeInBack]) async {
     AnimationController controller = animationManager.createController(duration);
 
     LatLng oldPos = camera.center;
@@ -34,8 +34,6 @@ class LocationController extends MapControllerImpl {
       move(latTween.value, zoomTween.value);
     });
 
-    controller.forward().then((value) => controller.dispose());
+    await controller.forward().then((value) => controller.dispose());
   }
-
-  
 }
