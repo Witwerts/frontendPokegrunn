@@ -68,8 +68,8 @@ class MapPageState extends NavigationPageState {
         FlutterMap(
           mapController: mapController,
           options: const MapOptions(
-            initialCenter: LatLng(53.241440630171795, 6.5332570758746265),
-            initialZoom: 14,
+            initialCenter: LatLng(53.2177454, 6.5615083), //groningen!
+            initialZoom: 12,
             interactionOptions: InteractionOptions(),
           ),
           children: [
@@ -93,20 +93,5 @@ class MapPageState extends NavigationPageState {
         const Titlebar(title: "Achievements in de buurt"),
       ],
     );
-
-    /*return Scaffold(
-      backgroundColor: MainApp.color1,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text(
-          "Achievements in de buurt",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-      ),
-    );*/
   }
 }

@@ -1,216 +1,204 @@
 import 'package:flutter/material.dart';
+import 'package:pokegrunn/controllers/AccountController.dart';
+import 'package:pokegrunn/controllers/AchievementController.dart';
 import 'package:pokegrunn/models/AchievementModel.dart';
 import 'package:pokegrunn/models/MainApp.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
+import 'package:pokegrunn/models/UserModel.dart';
+import 'package:pokegrunn/pages/AchievementOverview.dart';
 import 'package:pokegrunn/views/BoxContainer.dart';
 import 'package:pokegrunn/widgets/Titlebar.dart';
+import 'package:provider/provider.dart';
 import '../models/NavigationPage.dart';
 
 class UserOverview extends NavigationPage {
-  const UserOverview({super.key});
+  const UserOverview({super.key, required this.user});
+  final UserModel user;
 
   @override
-  String get routePath => "/dashboard";
+  String get routePath => "/profile";
 
   @override
   bool get loginNeeded => true;
 
   @override
-  NavigationPageState createState() => AchievementOverviewPageState();
+  NavigationPageState createState() => UserOverviewPageState();
 }
 
-class AchievementOverviewPageState extends NavigationPageState<UserOverview> {
+class UserOverviewPageState extends NavigationPageState<UserOverview> {
+  int score = 0;
+  List<AchievementModel> recentList = List.empty();
+
+  @override
+  void initState(){
+    WidgetsBinding.instance.addPostFrameCallback((_) => updateData());
+
+    super.initState();
+  }
+
+  Future<void> updateData() async {
+    AchievementController achievementController = Provider.of<AchievementController>(context, listen: false);
+
+    int score = await achievementController.getPoints(widget.user.username);
+    
+    List<AchievementModel> recentList = await achievementController.getRecent(widget.user.username, 5);
+
+    if (context.mounted) {
+      setState(() {
+        this.score = score;
+        this.recentList = recentList;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BoxContainer(
-        padding: EdgeInsets.zero,
-        child: Stack(children: [
+    AchievementController achievementController = Provider.of<AchievementController>(context);
+    AccountController accountController = Provider.of<AccountController>(context);
+
+    return Container(
+      padding: EdgeInsets.zero,
+      margin: EdgeInsets.zero,
+      color: MainApp.color1,
+      child: Stack(
+        children: [
           Titlebar(
-            title: "Albert Witwer",
+            title: widget.user.username ?? '',
             barHeight: 80,
             showBack: true,
           ),
-          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Container(
-                width: double.infinity,
-                height: 460,
-                child: Column(
+          Container(
+            margin: const EdgeInsets.only(top: 80),
+            padding: EdgeInsets.zero,
+            child: ListView(
+              padding: const EdgeInsets.only(bottom: 96),
+              children: [
+                Column(
                   children: [
-                    Container(
-                      child: Icon(
-                        Icons.account_circle,
-                        size: 150,
-                      ),
+                    const Icon(
+                      Icons.account_circle,
+                      size: 150,
                     ),
-                    Text(
-                      'Punten: ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Stack(
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.star_rounded,
+                              size: 34,
+                              color: Colors.black,
+                            ),
+                            Icon(
+                              Icons.star_rounded,
+                              size: 28,
+                              color: Colors.amber,
+                            ),
+                          ]
+                        ),
+                        Text(
+                          "$score punten",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.normal,
+                            height: 1.0,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
                     ),
                     BoxContainer(
-                      margin: EdgeInsets.all(4),
-                      child: Column(children: [
-                        Stack(children: [
-                          Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 6, vertical: 5),
-                                  child: Text(
-                                    'Recent behaalde achievements:',
-                                    textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600),
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 0),
+                            child: Text(
+                              "Recent behaalde achievements",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600
+                              ),
+                            ),
+                          ),
+                          const Divider(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                            child: Column(
+                              children: recentList.map((ach) {
+                                bool isLast = recentList.indexOf(ach) == (recentList.length-1);
+
+                                return GestureDetector(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AchievementOverview(
+                                        achievement: ach,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                const Divider(height: 16),
-                                Column(children: [
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 0,
-                                                      horizontal: 0),
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                      width: double.infinity,
-                                                      height: 60,
-                                                      margin: EdgeInsets.zero,
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Expanded(
-                                                            flex: 2,
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(2.0),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                color: Colors
-                                                                    .blueGrey
-                                                                    .withOpacity(
-                                                                        0.2),
-                                                              ),
-                                                              child: ClipOval(
-                                                                child:
-                                                                    OverflowBox(
-                                                                  child:
-                                                                      Container(
-                                                                    margin:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            0.0),
-                                                                    child:
-                                                                        Align(
-                                                                      child: Padding(
-                                                                          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
-                                                                          child: Icon(
-                                                                            Icons.account_circle,
-                                                                            size:
-                                                                                60,
-                                                                          )),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          //Hier kloten
-                                                          Expanded(
-                                                            flex:
-                                                                6, // Flex voor de rode container
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () => Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              UserOverview())),
-                                                              child: Container(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        5.0,
-                                                                    vertical:
-                                                                        4.0),
-                                                                width: double
-                                                                    .infinity,
-                                                                height: double
-                                                                    .infinity, // Hoogte wordt automatisch verdeeld
-                                                                child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                      'Albert Witwerts',
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              27.0,
-                                                                          fontWeight: FontWeight
-                                                                              .w500,
-                                                                          height:
-                                                                              1.8,
-                                                                          overflow: TextOverflow
-                                                                              .ellipsis,
-                                                                          color:
-                                                                              MainApp.color3),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ],
-
-                                                        //children: widget.items.map((item) {
-                                                        //bool isLast = widget.items.indexOf(item) == (widget.items.length-1);
-
-                                                        //print(widget.items.indexOf(item));
-                                                        //print(isLast);
-
-                                                        //return CarouselListItem(item, EdgeInsets.only(bottom: !isLast ? 4.0 : 0.0));
-                                                        //}).toList(),
-                                                      )),
-                                                ],
-                                              ))
-                                        ],
-                                      )
-                                    ],
-                                  )
-                                ])
-                              ])
-                        ]),
-                      ]),
-                      //Hier kloten
-                    )
+                                  child: BoxContainer(
+                                    radius: const BorderRadius.all(Radius.circular(6)),
+                                    margin: EdgeInsets.only(bottom: !isLast ? 4 : 0),
+                                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                                    borderColor: Colors.black.withOpacity(0.2),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: ClipRRect(
+                                              borderRadius: const BorderRadius.all(Radius.circular(36)),
+                                              child: Container(
+                                                margin: EdgeInsets.zero,
+                                                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                                                color: const Color.fromARGB(255, 220, 220, 220),
+                                                child: const Icon(
+                                                  Icons.account_circle,
+                                                  size: 64,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                                            child: Text(
+                                              ach.title ?? '',
+                                              style: const TextStyle(
+                                                fontSize: 27.0,
+                                                fontWeight: FontWeight.w500,
+                                                height: 1.8,
+                                                overflow: TextOverflow.ellipsis,
+                                                color:MainApp.color3
+                                              ),
+                                            ),
+                                          )
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
-
-                  //children: widget.items.map((item) {
-                  //bool isLast = widget.items.indexOf(item) == (widget.items.length-1);
-
-                  //print(widget.items.indexOf(item));
-                  //print(isLast);
-
-                  //return CarouselListItem(item, EdgeInsets.only(bottom: !isLast ? 4.0 : 0.0));
-                  //}).toList(),
-                ))
-          ]),
-        ]));
+                )
+              ]
+            ),
+          ),
+        ]
+      )
+    );
   }
 }

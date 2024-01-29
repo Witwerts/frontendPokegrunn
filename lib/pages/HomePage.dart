@@ -38,7 +38,7 @@ class HomePageState extends NavigationPageState {
     
     this.closestList = closestList;
 
-    await achievementController.savePoints(accountController.username);
+    accountController.points = await achievementController.getPoints(accountController.username);
   }
 
   @override

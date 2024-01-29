@@ -40,4 +40,20 @@ class AccountService {
 
     return null;
   }
+
+  Future<List<UserModel>> fetchUsers() async {
+    Response? response = await DataManager.getResponse("$apiEnpoint/users");
+    
+    if (response != null && response.statusCode == 200) {
+      List<dynamic>? body = DataManager.convertData(response) as List<dynamic>?;
+
+      if(body != null){
+        List<UserModel> users = body!.map((user) => UserModel.fromJson(user)).toList();
+
+        return users;
+      }
+    }
+
+    return List.empty();
+  }
 }

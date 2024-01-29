@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pokegrunn/controllers/NavigationController.dart';
 import 'package:pokegrunn/models/AchievementModel.dart';
 import 'package:pokegrunn/models/CarouselItem.dart';
 import 'package:pokegrunn/models/MainApp.dart';
 import 'package:pokegrunn/pages/AchievementOverview.dart';
 import 'package:pokegrunn/views/BoxContainer.dart';
+import 'package:provider/provider.dart';
 
 class CarouselListItem extends StatelessWidget {
   final CarouselItem item;
@@ -14,6 +16,9 @@ class CarouselListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NavigationController navController =
+        Provider.of<NavigationController>(context);
+
     return Container(
       width: double.infinity,
       height: 80,
@@ -49,7 +54,7 @@ class CarouselListItem extends StatelessWidget {
                               fit: BoxFit.cover,
                             ),
                           )
-                        : Icon(
+                        : const Icon(
                             Icons.image_not_supported, // Use your fallback icon here
                             size: 40.0,
                             color: Colors.grey,
@@ -65,7 +70,7 @@ class CarouselListItem extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Achievementoverview(
+                  builder: (context) => AchievementOverview(
                     achievement: item as AchievementModel,
                   ),
                 ),
@@ -92,8 +97,7 @@ class CarouselListItem extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        item.desc ??
-                            'dsdsdsdjksjdsfjsdjkjkdskj sasasdds ssadasasddssda saddasdasdsaads',
+                        item.desc ?? '',
                         maxLines: 2,
                         style: const TextStyle(
                           fontSize: 14.0,

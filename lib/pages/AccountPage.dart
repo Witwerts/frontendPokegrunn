@@ -7,8 +7,10 @@ import 'package:pokegrunn/models/MainApp.dart';
 import 'package:pokegrunn/models/NavigationCategory.dart';
 import 'package:pokegrunn/models/NavigationPageState.dart';
 import 'package:pokegrunn/models/PageNavigator.dart';
+import 'package:pokegrunn/models/UserModel.dart';
 import 'package:pokegrunn/pages/UserOverview.dart';
 import 'package:pokegrunn/views/BoxContainer.dart';
+import 'package:pokegrunn/widgets/CarouselListItem.dart';
 import 'package:pokegrunn/widgets/Titlebar.dart';
 import 'package:provider/provider.dart';
 import '../models/NavigationPage.dart';
@@ -52,220 +54,193 @@ class AccountPageState extends NavigationPageState {
     AchievementController achievementController = 
         Provider.of<AchievementController>(context);
 
+    List<UserModel> friends = accountController.friends;
+
+    if(accountController.isLoggedIn){
+      friends.remove(accountController.user);
+    }
+
     return Container(
-        color: MainApp.color1,
-        padding: EdgeInsets.zero,
-        child: Stack(children: [
-          Titlebar(
+      color: MainApp.color1,
+      padding: EdgeInsets.zero,
+      child: Stack(
+        children: [
+          const Titlebar(
             title: "Account",
             barHeight: 80,
           ),
           Container(
-            padding: EdgeInsets.only(top: 80, bottom: 80),
-            child: Column(children: [
-              SizedBox(
-                height: 30,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  accountController.user?.username ?? "",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "${achievementController.totalPoints} punten",
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              BoxContainer(
-                  margin: EdgeInsets.all(4),
-                  child: Column(children: [
-                    Stack(
+            margin: const EdgeInsets.only(top: 80),
+            padding: EdgeInsets.zero,
+            child: ListView(
+              padding: const EdgeInsets.only(bottom: 96),
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    Column(
                       children: [
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 8),
-                              child: Icon(
-                                Icons.supervisor_account_sharp,
-                                size: 35,
-                              )),
+                        Text(
+                          accountController.user?.username ?? "",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 34,
+                            height: 1.0
+                          ),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 5),
-                              child: Text(
-                                'Vrienden',
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                    fontSize: 22, fontWeight: FontWeight.w600),
+                            const Stack(
+                              alignment: Alignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.star_rounded,
+                                  size: 34,
+                                  color: Colors.black,
+                                ),
+                                Icon(
+                                  Icons.star_rounded,
+                                  size: 28,
+                                  color: Colors.amber,
+                                ),
+                              ]
+                            ),
+                            Text(
+                              "${accountController.points} punten",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.normal,
+                                height: 1.0,
+                                fontSize: 20,
                               ),
                             ),
-                            const Divider(height: 16),
-                            Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 4),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                        width: double.infinity,
-                                        height: 80,
-                                        margin: EdgeInsets.zero,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 6.0),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color:
-                                                Colors.black.withOpacity(0.2),
-                                            width: 1.0,
-                                            strokeAlign:
-                                                BorderSide.strokeAlignInside,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(6.0)),
-                                        ),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(2.0),
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.blueGrey
-                                                      .withOpacity(0.2),
-                                                ),
-                                                child: ClipOval(
-                                                  child: OverflowBox(
-                                                    child: Container(
-                                                      margin:
-                                                          const EdgeInsets.all(
-                                                              0.0),
-                                                      child: Align(
-                                                        child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical: 0,
-                                                                    horizontal:
-                                                                        8),
-                                                            child: Icon(
-                                                              Icons
-                                                                  .account_circle,
-                                                              size: 60,
-                                                            )),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            //Hier kloten
-                                            Expanded(
-                                              flex:
-                                                  6, // Flex voor de rode container
-                                              child: GestureDetector(
-                                                onTap: () => Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            UserOverview())),
-                                                child: Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 5.0,
-                                                      vertical: 4.0),
-                                                  width: double.infinity,
-                                                  height: double
-                                                      .infinity, // Hoogte wordt automatisch verdeeld
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Albert Witwerts',
-                                                        style: const TextStyle(
-                                                            fontSize: 27.0,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            height: 1.8,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            color:
-                                                                MainApp.color3),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-
-                                          //children: widget.items.map((item) {
-                                          //bool isLast = widget.items.indexOf(item) == (widget.items.length-1);
-
-                                          //print(widget.items.indexOf(item));
-                                          //print(isLast);
-
-                                          //return CarouselListItem(item, EdgeInsets.only(bottom: !isLast ? 4.0 : 0.0));
-                                          //}).toList(),
-                                        )),
-                                  ],
-                                ))
                           ],
                         )
                       ],
-                    )
-                  ]))
-            ]),
-          ),
-          Divider(),
-          Expanded(
-            child: Container(
-              margin:
-                  EdgeInsetsDirectional.symmetric(horizontal: 5, vertical: 100),
-              padding: const EdgeInsets.fromLTRB(0, 4, 4, 0),
-              alignment: Alignment.bottomLeft,
-              child: ElevatedButton(
-                onPressed: () => logout(),
-                style: ElevatedButton.styleFrom(
-                  primary: MainApp.color2,
-                  onPrimary: Colors.white,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 50.0, vertical: 12.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
+                    ),
+                    BoxContainer(
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 0),
+                            child: Text(
+                              "Friends",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600
+                              ),
+                            ),
+                          ),
+                          const Divider(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                            child: Column(
+                              children: friends.map((friend) {
+                                bool isLast = friends.indexOf(friend) == (friends.length-1);
+
+                                return GestureDetector(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => UserOverview(
+                                        user: friend,
+                                      ),
+                                    ),
+                                  ),
+                                  child: BoxContainer(
+                                    radius: const BorderRadius.all(Radius.circular(6)),
+                                    margin: EdgeInsets.zero,
+                                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                                    borderColor: Colors.black.withOpacity(0.2),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: ClipRRect(
+                                              borderRadius: const BorderRadius.all(Radius.circular(36)),
+                                              child: Container(
+                                                margin: EdgeInsets.zero,
+                                                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                                                color: const Color.fromARGB(255, 220, 220, 220),
+                                                child: const Icon(
+                                                  Icons.account_circle,
+                                                  size: 64,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                                            child: Text(
+                                            friend.username ?? '',
+                                            style: const TextStyle(
+                                              fontSize: 27.0,
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.8,
+                                              overflow: TextOverflow.ellipsis,
+                                              color:MainApp.color3),
+                                            ),
+                                          )
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]
                 ),
-                child: const Text(
-                  "Logout",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: const EdgeInsetsDirectional.symmetric(horizontal: 5),
+                      padding: const EdgeInsets.fromLTRB(0, 4, 4, 0),
+                      alignment: Alignment.bottomLeft,
+                      child: ElevatedButton(
+                        onPressed: () => logout(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: MainApp.color2,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 12.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        child: const Text(
+                          "Logout",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
           )
-        ]));
+        ],
+      )
+    );
   }
 }

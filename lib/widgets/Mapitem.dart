@@ -77,7 +77,7 @@ class _MapItemState extends State<MapItem> {
                     onPressed: () => {Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Achievementoverview(
+                        builder: (context) => AchievementOverview(
                           achievement: achievement,
                         ),
                       ),

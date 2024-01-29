@@ -15,8 +15,12 @@ class AccountController with ChangeNotifier {
   String? _username;
   LatLng? _position;
 
+  List<UserModel> _friends = List.empty();
+
   String? get username => _username;
   LatLng? get position => _position;
+  List<UserModel> get friends => _friends;
+  int points = 0;
 
   UserModel? _user;
   UserModel? get user => _user;
@@ -43,14 +47,16 @@ class AccountController with ChangeNotifier {
 
   Future<bool> login(String username) async {
     UserModel? userData = await accountService.fetchUser(username);
-    LatLng? position = await locationService.getCurrent();
-
-    await locationService.startListening(updateLocation);
+    LatLng? position;
+    List<UserModel> friends;
 
     if (userData != null) {
       _username = userData.username;
+      friends = await accountService.fetchUsers();
+      position = await locationService.getCurrent();
 
       if(position != null){
+        _friends = friends;
         _position = position;
         locationService.currentPosition = position;
       }
@@ -58,6 +64,7 @@ class AccountController with ChangeNotifier {
       _user = userData;
 
       accountService.saveUser(_username!);
+      await locationService.startListening(updateLocation);
 
       return true;
     }
@@ -69,7 +76,7 @@ class AccountController with ChangeNotifier {
 
   void updateLocation(LatLng pos){
     _position = pos;
-
+    
     notifyListeners();
   }
 

@@ -18,8 +18,6 @@ class AchievementController with ChangeNotifier {
   List<AchievementModel> _achievements = [];
   List<AchievementModel> get achievements => _achievements;
 
-  int totalPoints = 0;
-
   final AccountService accountService;
   final AchievementService achievementService;
   final LocationService locationService;
@@ -65,9 +63,9 @@ class AchievementController with ChangeNotifier {
     return achievements.sublist(0, min(max, achievements.length));
   }
 
-  Future<void> savePoints(String? username) async {
+  Future<int> getPoints(String? username) async {
     if (username == null) {
-      return;
+      return 0;
     }
 
     List<AchievementModel> recent = await getRecent(username, (10e5).toInt());
@@ -78,7 +76,7 @@ class AchievementController with ChangeNotifier {
       points += achievement.points??0;
     }
 
-    totalPoints = points;
+    return points;
   }
 
   Future<List<AchievementModel>> getRecent(String? username, int max) async {

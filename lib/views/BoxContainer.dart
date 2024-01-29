@@ -9,6 +9,9 @@ class BoxContainer extends Container {
     padding,
     margin,
     decoration,
+    border,
+    borderColor,
+    radius,
     child,
   }) : super(
             alignment: alignment ?? Alignment.topLeft,
@@ -18,9 +21,9 @@ class BoxContainer extends Container {
             decoration: decoration ??
                 BoxDecoration(
                   color: color ?? Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.4),
+                  borderRadius: radius ?? const BorderRadius.all(Radius.circular(12)),
+                  border: border ?? Border.all(
+                    color: borderColor ?? Colors.black.withOpacity(0.4),
                     width: 1,
                   ),
                 ),
