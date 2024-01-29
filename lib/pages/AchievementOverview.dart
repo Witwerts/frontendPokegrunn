@@ -28,78 +28,91 @@ class AchievementOverviewPageState
     return Container(
       padding: EdgeInsets.zero,
       color: MainApp.color1,
-      child: Stack(children: [
-        Titlebar(
-          title: "${achievement.title}",
-          barHeight: 80,
-          showBack: true,
-        ),
-        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      child: Stack(
+        children: [
+          Titlebar(
+            title: "${achievement.title}",
+            barHeight: 80,
+            showBack: true,
+          ),
           Container(
-              width: double.infinity,
-              height: 460,
-              child: Column(
-                children: [
-                  Container(
-                    child: 
-                      achievement.image != null || achievement.image == "" ?
-                        Image.network('${achievement.image}')
-                      :
-                      Icon(
-                        Icons.image_not_supported, // Use your fallback icon here
-                        size: 40.0,
-                        color: Colors.grey,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black.withOpacity(0.2),
-                          width: 5.0,
-                          strokeAlign: BorderSide.strokeAlignInside,
+            margin: const EdgeInsets.only(top: 80),
+            padding: EdgeInsets.zero,
+            child: ListView(
+              padding: const EdgeInsets.only(bottom: 96, top: 30),
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      child: 
+                        achievement.image != null || achievement.image == "" ?
+                          Image.network('${achievement.image}')
+                        :
+                        Icon(
+                          Icons.image_not_supported, // Use your fallback icon here
+                          size: 40.0,
+                          color: Colors.grey,
                         ),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(6.0)),
-                      )),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        if (achievement.startTime != null && achievement.endTime != null)
-                          Icon(Icons.calendar_month_rounded),
-                        if (achievement.startTime != null && achievement.endTime != null)
-                          Text('${achievement.startDate} - ${achievement.endDate}',
-                            style: TextStyle(fontSize: 16)),
-                      ]),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        if (achievement.startTime != null && achievement.endTime != null)
-                          const Icon(Icons.access_time),
-                        if (achievement.startTime != null && achievement.endTime != null)
-                          Text('${achievement.startTime} - ${achievement.endTime}',
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black.withOpacity(0.2),
+                            width: 5.0,
+                            strokeAlign: BorderSide.strokeAlignInside,
+                          ),
+                          borderRadius: const BorderRadius.all(Radius.circular(6.0)
+                        ),
+                      )
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          if (achievement.startTime != null && achievement.endTime != null)
+                            Icon(Icons.calendar_month_rounded),
+                          if (achievement.startTime != null && achievement.endTime != null)
+                            Text('${achievement.startDate} - ${achievement.endDate}',
                               style: TextStyle(fontSize: 16)),
-                        ]
-                      ),
-                  Row(
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          if (achievement.startTime != null && achievement.endTime != null)
+                            const Icon(Icons.access_time),
+                          if (achievement.startTime != null && achievement.endTime != null)
+                            Text('${achievement.startTime} - ${achievement.endTime}',
+                                style: TextStyle(fontSize: 16)),
+                          ]
+                        ),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text('Categorie: ${achievement.category}',
                             style: TextStyle(fontSize: 16)),
-                      ]),
-                  Container(
+                      ]
+                    ),
+                    Container(
                       margin: const EdgeInsets.all(15.0),
                       padding: const EdgeInsets.all(3.0),
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 1)),
-                      child: Column(children: [
-                        Text('${achievement.description}', maxLines: 10, ),
-                        Text('Te behalen punten: ${achievement.points}',
-                            style: TextStyle(fontSize: 17))
-                      ]))
-                ])),
-        ])
-      ]),
-    );
+                        border: Border.all(color: Colors.black, width: 1)
+                      ),
+                      child: Column(
+                        children: [
+                          Text('${achievement.description}', maxLines: 10, ),
+                          Text('Te behalen punten: ${achievement.points}',
+                              style: TextStyle(fontSize: 17))
+                        ]
+                      )
+                    )
+                  ]
+                )
+              ]
+            )
+          )
+        ]
+      )
+    );             
   }
 }
